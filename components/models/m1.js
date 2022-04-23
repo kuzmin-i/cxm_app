@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader";
 
