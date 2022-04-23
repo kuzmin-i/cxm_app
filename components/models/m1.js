@@ -3,7 +3,19 @@ import { Canvas, useLoader } from "@react-three/fiber";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader";
 
 const Rhino3dmLogo = ({ url, setActiveLayers, setObjects, ...props }) => {
-  const model = useMemo(
+  const [model, setModel] = useState(null);
+
+  useEffect(() => {
+    const _model = useLoader(Rhino3dmLoader, url, (loader) =>
+      loader.setLibraryPath(
+        "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/"
+      )
+    );
+
+    setModel(_model);
+  }, [url]);
+
+  /*const model = useMemo(
     () =>
       useLoader(Rhino3dmLoader, url, (loader) =>
         loader.setLibraryPath(
@@ -11,7 +23,7 @@ const Rhino3dmLogo = ({ url, setActiveLayers, setObjects, ...props }) => {
         )
       ),
     [url]
-  );
+  );*/
 
   useEffect(() => {
     if (model) {
