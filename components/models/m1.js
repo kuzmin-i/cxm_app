@@ -64,8 +64,6 @@ const ObjectM1 = ({ setActiveLayers, objects, setObjects, hiddenLayers }) => {
         />
 
         {objects.map(({ object, layerIndex }, m) => {
-          console.log("layerIndex", layerIndex);
-
           return !hiddenLayers.includes(layerIndex) ? object : <></>;
         })}
       </group>
