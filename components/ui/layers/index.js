@@ -5,17 +5,14 @@ import { Checkbox } from "antd";
 import { useEffect } from "react";
 
 const Wrapper = styled.div`
-  position: fixed;
-  left: 80px;
-  bottom: 40px;
   width: 100%;
-  max-width: 300px;
+  max-width: 250px;
 
   padding: 24px;
   background: lightgrey;
   border-radius: 10px;
 
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 
   display: flex;
   flex-direction: column;
@@ -27,7 +24,7 @@ const LayerWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 10px 0;
+  padding: 6px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
   justify-content: space-between;
@@ -71,11 +68,13 @@ const Layer = ({ name, color, hiddenLayers = [], setHiddenLayers, index }) => {
   );
 };
 
-const Layers = ({ data = [], hiddenLayers, setHiddenLayers = () => {} }) => {
-  useEffect(() => {
-    console.log("hiddenLayers", hiddenLayers);
-  }, [hiddenLayers]);
-
+const Layers = ({
+  data = [],
+  hiddenLayers,
+  setHiddenLayers = () => {},
+  hideLayer = true,
+  setHideLayer = () => {},
+}) => {
   return (
     <Wrapper>
       {data.map(({ ...props }, i) => {
@@ -83,7 +82,7 @@ const Layers = ({ data = [], hiddenLayers, setHiddenLayers = () => {} }) => {
           <Layer
             {...props}
             index={i}
-            {...{ hiddenLayers, setHiddenLayers }}
+            {...{ hiddenLayers, setHiddenLayers, hideLayer, setHideLayer }}
             key={`layer::${i}`}
           />
         );

@@ -1,25 +1,19 @@
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
+import { useProgress } from "@react-three/drei";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader";
 
-const Rhino3dmLogo = ({ url, setActiveLayers, setObjects, ...props }) => {
-  //const [model, setModel] = useState(null);
+const Loader = () => {
+  const { progress } = useProgress();
+  console.log("progress", progress);
 
+  return <group />;
+};
+
+const Rhino3dmLogo = ({ url, setActiveLayers, setObjects, ...props }) => {
   const model = useLoader(Rhino3dmLoader, url, (loader) =>
     loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/")
   );
-
-  console.log("dd");
-
-  /*const model = useMemo(
-    () =>
-      useLoader(Rhino3dmLoader, url, (loader) =>
-        loader.setLibraryPath(
-          "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/"
-        )
-      ),
-    [url]
-  );*/
 
   useEffect(() => {
     if (model) {
@@ -53,7 +47,7 @@ const Rhino3dmLogo = ({ url, setActiveLayers, setObjects, ...props }) => {
 
 const ObjectM1 = ({ setActiveLayers, objects, setObjects, hiddenLayers }) => {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Loader />}>
       <group
         scale={[0.001, 0.001, 0.001]}
         rotation={[(-90 / 180) * Math.PI, 0, 0]}
