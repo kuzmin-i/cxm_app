@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { Button, Radio, Spin } from "antd";
+import { Button, Radio, Spin, Space, Grid, Typography } from "antd";
+const { useBreakpoint } = Grid;
+const { Text } = Typography;
 
 const Wrapper = styled.div`
   position: fixed;
@@ -23,6 +25,13 @@ const Wrapper = styled.div`
       display: none;
     }
   }
+
+  @media (max-width: 576px) {
+    &,
+    & * {
+      font-size: 12px;
+    }
+  }
 `;
 
 const Loading = styled.div`
@@ -37,11 +46,23 @@ const Loading = styled.div`
   color: white;
   padding: 6px 12px;
   border-radius: 100px;
+
+  @media (max-width: 576px) {
+    &,
+    & * {
+      font-size: 12px;
+    }
+  }
 `;
 
 const antIcon = (
   <LoadingOutlined
-    style={{ fontSize: 24, color: "black", paddingRight: "12px", marginRight: '12px' }}
+    style={{
+      fontSize: 24,
+      color: "black",
+      paddingRight: "12px",
+      marginRight: "12px",
+    }}
     spin
   />
 );
@@ -53,12 +74,23 @@ const BottomNav = ({
   loadingObj,
   loadingVisible,
 }) => {
+  const screens = useBreakpoint();
+
   return (
     <>
       {loadingVisible && (
         <Loading>
-          <Spin indicator={antIcon} /> {loadingObj}:{" "}
-          {Math.round(parseFloat(percentsLoaded))}% loaded
+          <Space
+            align="center"
+            direction={screens.sm ? "horizontal" : "vertical"}
+          >
+            <Space size={0}>
+              <Spin indicator={antIcon} /> {loadingObj}:{" "}
+            </Space>
+            <Text style={{ color: "white" }}>
+              {Math.round(parseFloat(percentsLoaded))}% loaded
+            </Text>
+          </Space>
         </Loading>
       )}
 

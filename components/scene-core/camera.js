@@ -46,7 +46,7 @@ const Camera = (props = {}) => {
       <OrbitControls
         minPolarAngle={0}
         maxPolarAngle={Math.PI * 0.3}
-        enableRotate
+        enableRotate={view === 'ortho'}
         enableZoom
         enablePan
         ref={orbitRef}

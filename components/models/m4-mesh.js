@@ -75,7 +75,7 @@ const ObjectM4 = ({
       >
         <Rhino3dmLogo
           {...{ setObjects, setLayers, setReady }}
-          url="/models/big_mesh.3dm"
+          url="/models/big_mesh-1.3dm"
         />
 
         {objects.map(({ object, layerIndex }, m) => {
