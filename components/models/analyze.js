@@ -85,7 +85,7 @@ const Analyze = () => {
       const lineGeometry = new THREE.BufferGeometry().setFromPoints(circle);
       const circle_obj = (
         <line geometry={lineGeometry} position={position}>
-          <lineBasicMaterial attach="material" color={color} linewidth={10} />
+          <lineBasicMaterial attach="material" color={color} linewidth={100} />
         </line>
       );
 

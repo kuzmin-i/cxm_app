@@ -33,7 +33,9 @@ const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
       });
 
       let material = new MeshStandardMaterial({
-        color: "grey",
+        color: "blue",
+        transparent: true,
+        opacity: 0.7,
       });
 
       setLayers(formatLayers);

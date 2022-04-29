@@ -123,8 +123,11 @@ const Scene = () => {
         />
 
         <ambientLight />
-        <pointLight position={[100, 100, 100]} />
-
+        <pointLight position={[50, 50, 60]} intensity={8} />
+        {/*<mesh position={[50, 50, 60]} scale={[10, 10, 10]}>
+          <planeBufferGeometry />
+          <meshStandardMaterial color={"red"} />
+        </mesh>*/}
         {/*null && (
           <ObjectM1
             {...{ setActiveLayers, objects, setObjects, hiddenLayers }}
@@ -141,7 +144,7 @@ const Scene = () => {
             setLoadingObj={() => setLoadingObj("Layer 1 (Lines)")}
           />
         }
-        {isReady1 && null && (
+        {isReady1 && (
           <ObjectM3
             setLayers={setLayers2}
             hiddenLayers={hiddenLayers2}
@@ -150,7 +153,7 @@ const Scene = () => {
             setLoadingObj={() => setLoadingObj("Layer 2 (Rails)")}
           />
         )}
-        {isReady2 && null && (
+        {isReady2 && (
           <ObjectM4
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
