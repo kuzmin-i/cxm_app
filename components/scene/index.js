@@ -13,6 +13,7 @@ import ObjectM2 from "../models/m2-common";
 import ObjectM3 from "../models/m3-rails";
 import ObjectM4 from "../models/m4-mesh";
 import { useEffect } from "react";
+import Analyze from "../models/analyze";
 
 const { useBreakpoint } = Grid;
 
@@ -129,6 +130,8 @@ const Scene = () => {
             {...{ setActiveLayers, objects, setObjects, hiddenLayers }}
           />
         )*/}
+
+        <Analyze />
         {
           <ObjectM2
             setLayers={setLayers1}
@@ -138,7 +141,7 @@ const Scene = () => {
             setLoadingObj={() => setLoadingObj("Layer 1 (Lines)")}
           />
         }
-        {isReady1 && (
+        {isReady1 && null && (
           <ObjectM3
             setLayers={setLayers2}
             hiddenLayers={hiddenLayers2}
@@ -147,7 +150,7 @@ const Scene = () => {
             setLoadingObj={() => setLoadingObj("Layer 2 (Rails)")}
           />
         )}
-        {isReady2 && (
+        {isReady2 && null && (
           <ObjectM4
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}

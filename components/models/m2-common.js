@@ -59,6 +59,8 @@ const ObjectM2 = ({
 }) => {
   const [objects, setObjects] = useState([]);
 
+  console.log("objects", objects);
+
   return (
     <Suspense fallback={<Loader {...{ setPercentsLoaded, setLoadingObj }} />}>
       <group
