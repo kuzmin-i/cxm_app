@@ -29,7 +29,7 @@ const Analyze = () => {
 
   const fetchTodos = async () => {
     const response = await fetch(
-      "http://51.250.19.71:8080/mmodel_method/estimate_plane_collisions"
+      "https://51.250.19.71:8080/mmodel_method/estimate_plane_collisions"
     );
     const todos = await response.json();
 
