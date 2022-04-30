@@ -11,9 +11,11 @@ import Layers from "../ui/layers";
 import BottomNav from "../ui/bottom-nav";
 import ObjectM2 from "../models/m2-common";
 import ObjectM3 from "../models/m3-rails";
+import ObjectM3Wire from "../models/m3-rails_wire";
 import ObjectM4 from "../models/m4-mesh";
 import { useEffect } from "react";
 import Analyze from "../models/analyze";
+import ObjectM4Wire from "../models/m4-mesh_wire";
 
 const { useBreakpoint } = Grid;
 
@@ -145,6 +147,15 @@ const Scene = () => {
           />
         }
         {isReady1 && (
+          <ObjectM3Wire
+            setLayers={setLayers2}
+            hiddenLayers={hiddenLayers2}
+            setReady={setReady2}
+            setPercentsLoaded={setPercentsLoaded}
+            setLoadingObj={() => setLoadingObj("Layer 2 (Rails)")}
+          />
+        )}
+        {isReady1 && null && (
           <ObjectM3
             setLayers={setLayers2}
             hiddenLayers={hiddenLayers2}
@@ -154,6 +165,15 @@ const Scene = () => {
           />
         )}
         {isReady2 && (
+          <ObjectM4Wire
+            setLayers={setLayers3}
+            hiddenLayers={hiddenLayers3}
+            setReady={setReady3}
+            setPercentsLoaded={setPercentsLoaded}
+            setLoadingObj={() => setLoadingObj("Layer 3 (Roof Mesh)")}
+          />
+        )}
+        {isReady2 && null && (
           <ObjectM4
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}

@@ -80,9 +80,11 @@ const ObjectM4 = ({
           url="/models/big_mesh-1.3dm"
         />
 
-        {objects.map(({ object, layerIndex }, m) => {
-          return !hiddenLayers.includes(layerIndex) ? object : <></>;
-        })}
+        <group position={[0, 0, -1458]}>
+          {objects.map(({ object, layerIndex }, m) => {
+            return !hiddenLayers.includes(layerIndex) ? object : <></>;
+          })}
+        </group>
       </group>
     </Suspense>
   );
