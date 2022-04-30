@@ -39,25 +39,30 @@ const LayersWrapper = styled.div`
 const Scene = () => {
   const screens = useBreakpoint();
 
-  const [layers, setActiveLayers] = useState(null);
-  const [hiddenLayers, setHiddenLayers] = useState([]);
-
   /* Common */
   const [layers1, setLayers1] = useState(null);
   const [hiddenLayers1, setHiddenLayers1] = useState([]);
   const [isReady1, setReady1] = useState(false);
 
-  /* Rails */
+  /* RailsWire */
   const [layers2, setLayers2] = useState(null);
   const [hiddenLayers2, setHiddenLayers2] = useState([]);
-  const [hideLayer2, setHideLayer2] = useState(false);
   const [isReady2, setReady2] = useState(false);
 
-  /* Mesh */
+  /* MeshWire */
   const [layers3, setLayers3] = useState(null);
   const [hiddenLayers3, setHiddenLayers3] = useState([]);
-  const [hideLayer3, setHideLayer3] = useState([]);
   const [isReady3, setReady3] = useState(false);
+
+  /* Rails */
+  const [layers4, setLayers4] = useState(null);
+  const [hiddenLayers4, setHiddenLayers4] = useState([]);
+  const [isReady4, setReady4] = useState(false);
+
+  /* Mesh */
+  const [layers5, setLayers5] = useState(null);
+  const [hiddenLayers5, setHiddenLayers5] = useState([]);
+  const [isReady5, setReady5] = useState(false);
 
   /* */
   const [view, setView] = useState("ortho");
@@ -73,7 +78,7 @@ const Scene = () => {
           setView,
           loadingObj,
           percentsLoaded,
-          loadingVisible: !isReady3,
+          loadingVisible: !isReady4,
         }}
       />
 
@@ -104,6 +109,24 @@ const Scene = () => {
               {...{
                 hiddenLayers: hiddenLayers3,
                 setHiddenLayers: setHiddenLayers3,
+              }}
+            />
+          )}
+          {layers4 && isReady3 && (
+            <Layers
+              data={layers4}
+              {...{
+                hiddenLayers: hiddenLayers4,
+                setHiddenLayers: setHiddenLayers4,
+              }}
+            />
+          )}
+          {layers5 && isReady4 && (
+            <Layers
+              data={layers5}
+              {...{
+                hiddenLayers: hiddenLayers5,
+                setHiddenLayers: setHiddenLayers5,
               }}
             />
           )}
@@ -143,43 +166,53 @@ const Scene = () => {
             hiddenLayers={hiddenLayers1}
             setReady={setReady1}
             setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Layer 1 (Lines)")}
+            setLoadingObj={() => setLoadingObj("Размерная сетка")}
           />
         }
-        {isReady1 && (
+
+        {/* Черновые рельсы */}
+        {isReady1 && !isReady3 && (
           <ObjectM3Wire
             setLayers={setLayers2}
             hiddenLayers={hiddenLayers2}
             setReady={setReady2}
             setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Layer 2 (Rails)")}
+            setLoadingObj={() => setLoadingObj("Крыша")}
           />
         )}
-        {isReady1 && null && (
-          <ObjectM3
-            setLayers={setLayers2}
-            hiddenLayers={hiddenLayers2}
-            setReady={setReady2}
-            setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Layer 2 (Rails)")}
-          />
-        )}
-        {isReady2 && (
+
+        {/* Черновой меш */}
+        {isReady2 && !isReady4 && (
           <ObjectM4Wire
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
             setReady={setReady3}
             setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Layer 3 (Roof Mesh)")}
+            setLoadingObj={() => setLoadingObj("Коммуникации")}
           />
         )}
-        {isReady2 && null && (
-          <ObjectM4
-            setLayers={setLayers3}
-            hiddenLayers={hiddenLayers3}
-            setReady={setReady3}
+
+        {/* Blueprint rails */}
+        {isReady3 && (
+          <ObjectM3
+            setLayers={setLayers4}
+            hiddenLayers={hiddenLayers4}
+            setReady={setReady4}
             setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Layer 3 (Roof Mesh)")}
+            setLoadingObj={() => setLoadingObj("Крыша (высокое качество)")}
+          />
+        )}
+
+        {/* меш */}
+        {isReady4 && (
+          <ObjectM4
+            setLayers={setLayers5}
+            hiddenLayers={hiddenLayers5}
+            setReady={setReady5}
+            setPercentsLoaded={setPercentsLoaded}
+            setLoadingObj={() =>
+              setLoadingObj("Комуникации (Высокое качество)")
+            }
           />
         )}
       </Canvas>

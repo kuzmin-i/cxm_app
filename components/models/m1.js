@@ -5,7 +5,6 @@ import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader";
 
 const Loader = () => {
   const { progress } = useProgress();
-  console.log("progress", progress);
 
   return <group />;
 };

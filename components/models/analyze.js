@@ -43,6 +43,10 @@ const Analyze = () => {
       pointgrid = [],
     } = collisions;
 
+    console.log("bounds", bounds);
+    console.log("contour", contour);
+    console.log("outlines", outlines);
+
     const updated_pointgrid = pointgrid.map((point = [], i) => {
       const label_type = labels[i];
 
@@ -126,8 +130,6 @@ const Analyze = () => {
   useEffect(() => {
     fetchTodos();
   }, []);
-
-  console.log("pointsddd", points);
 
   return (
     <group rotation={[(-90 / 180) * Math.PI, 0, 0]}>

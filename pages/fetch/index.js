@@ -6,8 +6,6 @@ const FecthPage = () => {
       "http://51.250.19.71:8080/mmodel_method/estimate_plane_collisions"
     );
     const todos = await response.json();
-
-    console.log("todos", todos);
   };
 
   useEffect(() => {

@@ -88,7 +88,7 @@ const BottomNav = ({
               <Spin indicator={antIcon} /> {loadingObj}:{" "}
             </Space>
             <Text style={{ color: "white" }}>
-              {Math.round(parseFloat(percentsLoaded))}% loaded
+              {Math.round(parseFloat(percentsLoaded))}% модели загрузилось
             </Text>
           </Space>
         </Loading>

@@ -26,8 +26,6 @@ const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
     if (model) {
       setReady(true);
 
-      console.log("dfsfsdfd");
-
       const { children = [], userData = {} } = model ? model : {};
       const { layers = [] } = userData;
 
@@ -42,22 +40,19 @@ const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
         const { attributes = {} } = userData ? userData : {};
         const { layerIndex = null } = attributes ? attributes : {};
 
-        console.log("key", key);
-        console.log("layerIndex", layerIndex);
-
         let material = new MeshStandardMaterial({
           color: "#D8CDA5",
-          opacity: 1,
+          opacity: 0.8,
           side: THREE.DoubleSide,
+          transparent: true,
         });
 
         let material1 = new MeshStandardMaterial({
           color: "#696969",
-          opacity: 1,
+          opacity: 0.8,
           side: THREE.DoubleSide,
+          transparent: true,
         });
-
-        console.log("");
 
         return {
           object: (
@@ -70,8 +65,6 @@ const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
           layerIndex,
         };
       });
-
-      console.log("primitives", primitives);
 
       setObjects(primitives);
     }
