@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import * as THREE from "three";
 import { Html, Row, Col } from "@react-three/drei";
 import { CloseOutlined } from "@ant-design/icons";
+import { Line } from "@react-three/drei";
 
-const drawCircle = (r) => {
+const drawCircle = (r, useVector3) => {
   const points = [];
   const segments = 16;
 
@@ -11,7 +12,8 @@ const drawCircle = (r) => {
     const angle = (index / segments) * 2 * Math.PI;
     const x = r * Math.cos(angle);
     const z = r * Math.sin(angle);
-    points.push(new THREE.Vector3(x, z, 0));
+    if (useVector3) points.push(new THREE.Vector3(x, z, 0));
+    if (!useVector3) points.push([x, z, 0]);
   }
 
   points.push(points[0]);
@@ -85,12 +87,25 @@ const Analyze = () => {
         z0 * 0.001,
       ];
 
-      const circle = drawCircle(radius);
+      const circle = drawCircle(radius, false);
       const lineGeometry = new THREE.BufferGeometry().setFromPoints(circle);
-      const circle_obj = (
+      /* const circle_obj = (
         <line geometry={lineGeometry} position={position}>
           <lineBasicMaterial attach="material" color={color} linewidth={100} />
         </line>
+      );*/
+      const circle_obj = (
+        <group position={position}>
+          <Line points={circle} color={color} lineWidth={1} />
+          <Line
+            points={[
+              [0, 0, 0],
+              [0, 0, 5300 * 0.001],
+            ]}
+            color={color}
+            lineWidth={0.5}
+          />
+        </group>
       );
 
       return (
@@ -103,7 +118,7 @@ const Analyze = () => {
             onClick={() => {
               showTooltip(true);
               setPointType(label_type);
-              setTipPosition([position[0], position[1], 3]);
+              setTipPosition([position[0], position[1], 6]);
             }}
             onPointerOver={() => {
               return (document.body.style.cursor = "pointer");
@@ -196,6 +211,26 @@ const Analyze = () => {
                   ? "в радиусе 1000 нет свободного места"
                   : ""}
               </span>
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  padding: "5px 16px",
+                  marginTop: "8px",
+                  fontSize: "12px",
+                  border: "1px solid black",
+                  borderRadius: "20px",
+                }}
+              >
+                Редактировать
+              </div>
             </div>
           </div>
         </Html>

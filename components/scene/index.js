@@ -16,6 +16,7 @@ import ObjectM4 from "../models/m4-mesh";
 import { useEffect } from "react";
 import Analyze from "../models/analyze";
 import ObjectM4Wire from "../models/m4-mesh_wire";
+import ObjectM3Surface from "../models/m3-rails_surface";
 
 const { useBreakpoint } = Grid;
 
@@ -64,6 +65,11 @@ const Scene = () => {
   const [hiddenLayers5, setHiddenLayers5] = useState([]);
   const [isReady5, setReady5] = useState(false);
 
+  /* Surface */
+  const [layers6, setLayers6] = useState(null);
+  const [hiddenLayers6, setHiddenLayers6] = useState([]);
+  const [isReady6, setReady6] = useState(false);
+
   /* */
   const [view, setView] = useState("ortho");
 
@@ -97,7 +103,7 @@ const Scene = () => {
               }}
             />
           )}
-          {layers2 && isReady1 && (
+          {layers2 && isReady1 && (!layers4 || simpleModel) && (
             <Layers
               one
               data={layers2}
@@ -107,7 +113,7 @@ const Scene = () => {
               }}
             />
           )}
-          {layers3 && isReady2 && (
+          {layers3 && isReady2 && (!layers5 || simpleModel) && (
             <Layers
               data={layers3}
               {...{
@@ -116,7 +122,7 @@ const Scene = () => {
               }}
             />
           )}
-          {layers4 && isReady3 && (
+          {layers4 && isReady3 && !simpleModel && (
             <Layers
               data={layers4}
               {...{
@@ -125,7 +131,7 @@ const Scene = () => {
               }}
             />
           )}
-          {layers5 && isReady4 && (
+          {layers5 && isReady4 && !simpleModel && (
             <Layers
               data={layers5}
               {...{
@@ -207,6 +213,17 @@ const Scene = () => {
             setReady={setReady4}
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Крыша (высокое качество)")}
+          />
+        )}
+        {/* Плоскость */}
+        {null && isReady2 && (
+          <ObjectM3Surface
+            visible={true}
+            setLayers={setLayers6}
+            hiddenLayers={hiddenLayers6}
+            setReady={setReady6}
+            setPercentsLoaded={setPercentsLoaded}
+            setLoadingObj={() => setLoadingObj("Плоскость крыши")}
           />
         )}
 
