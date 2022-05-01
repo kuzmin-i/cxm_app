@@ -23,8 +23,6 @@ const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
 
   useEffect(() => {
     if (model) {
-      setReady(true);
-
       const { children = [], userData = {} } = model ? model : {};
       const { layers = [] } = userData;
 
@@ -54,6 +52,7 @@ const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
       });
 
       setObjects(primitives);
+      setReady(true);
     }
   }, [model]);
 
