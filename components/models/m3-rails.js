@@ -76,6 +76,7 @@ const ObjectM3 = ({
   setReady = () => {},
   setPercentsLoaded = () => {},
   setLoadingObj = () => {},
+  visible,
 }) => {
   const [objects, setObjects] = useState([]);
 
@@ -90,9 +91,10 @@ const ObjectM3 = ({
           url="/models/big_rails.3dm"
         />
 
-        {objects.map(({ object, layerIndex }, m) => {
-          return !hiddenLayers.includes(layerIndex) ? object : <></>;
-        })}
+        {visible &&
+          objects.map(({ object, layerIndex }, m) => {
+            return !hiddenLayers.includes(layerIndex) ? object : <></>;
+          })}
       </group>
     </Suspense>
   );

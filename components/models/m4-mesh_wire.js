@@ -66,6 +66,7 @@ const ObjectM4Wire = ({
   setReady = () => {},
   setPercentsLoaded = () => {},
   setLoadingObj = () => {},
+  visible,
 }) => {
   const [objects, setObjects] = useState([]);
 
@@ -80,11 +81,13 @@ const ObjectM4Wire = ({
           url="/models/big_reduced_mesh.3dm"
         />
 
-        <group position={[0, 0, -1458]}>
-          {objects.map(({ object, layerIndex }, m) => {
-            return !hiddenLayers.includes(layerIndex) ? object : <></>;
-          })}
-        </group>
+        {visible && (
+          <group position={[0, 0, -1458]}>
+            {objects.map(({ object, layerIndex }, m) => {
+              return !hiddenLayers.includes(layerIndex) ? object : <></>;
+            })}
+          </group>
+        )}
       </group>
     </Suspense>
   );

@@ -2,21 +2,33 @@ import React from "react";
 import styled from "styled-components";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { Button, Radio, Spin, Space, Grid, Typography } from "antd";
+import { Button, Radio, Spin, Space, Grid, Typography, Checkbox } from "antd";
 const { useBreakpoint } = Grid;
 const { Text } = Typography;
 
-const Wrapper = styled.div`
+const Bottom = styled.div`
   position: fixed;
   bottom: 40px;
-  width: max-content;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
+
+  display: flex;
+  && > * + * {
+    margin-left: 10px;
+  }
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  width: max-content;
+  display: flex;
+  align-items: center;
+
   border-radius: 200px;
 
   padding: 10px;
   background: white;
-  z-index: 10;
 
   && .ant-radio-button-wrapper {
     border-radius: 200px;
@@ -55,6 +67,15 @@ const Loading = styled.div`
   }
 `;
 
+const Disabling = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: grayscale(1);
+
+  z-index: 11;
+`;
+
 const antIcon = (
   <LoadingOutlined
     style={{
@@ -73,6 +94,8 @@ const BottomNav = ({
   percentsLoaded,
   loadingObj,
   loadingVisible,
+  simpleModel,
+  setSimpleModel,
 }) => {
   const screens = useBreakpoint();
 
@@ -94,16 +117,30 @@ const BottomNav = ({
         </Loading>
       )}
 
-      <Wrapper>
-        <Radio.Group value={view} size="large" onChange={() => {}}>
-          <Radio.Button value="ortho" onClick={() => setView("ortho")}>
-            Orthogonal view
-          </Radio.Button>
-          <Radio.Button value="top" onClick={() => setView("top")}>
-            Top view
-          </Radio.Button>
-        </Radio.Group>
-      </Wrapper>
+      <Bottom>
+        <Wrapper>
+          <Radio.Group value={view} size="large" onChange={() => {}}>
+            <Radio.Button value="ortho" onClick={() => setView("ortho")}>
+              Ортогональный вид
+            </Radio.Button>
+            <Radio.Button value="top" onClick={() => setView("top")}>
+              План
+            </Radio.Button>
+          </Radio.Group>
+        </Wrapper>
+
+        <Wrapper>
+          {loadingVisible && <Disabling />}
+
+          <Checkbox
+            style={{ opacity: loadingVisible ? 0.5 : 1 }}
+            checked={simpleModel}
+            onChange={(e) => setSimpleModel(!simpleModel)}
+          >
+            Упростить модель
+          </Checkbox>
+        </Wrapper>
+      </Bottom>
     </>
   );
 };

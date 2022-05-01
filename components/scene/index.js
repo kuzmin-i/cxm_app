@@ -70,6 +70,8 @@ const Scene = () => {
   const [loadingObj, setLoadingObj] = useState(null);
   const [percentsLoaded, setPercentsLoaded] = useState(0);
 
+  const [simpleModel, setSimpleModel] = useState(false);
+
   return (
     <>
       <BottomNav
@@ -79,6 +81,8 @@ const Scene = () => {
           loadingObj,
           percentsLoaded,
           loadingVisible: !isReady4,
+          simpleModel,
+          setSimpleModel,
         }}
       />
 
@@ -171,8 +175,9 @@ const Scene = () => {
         }
 
         {/* Черновые рельсы */}
-        {isReady1 && !isReady3 && (
+        {isReady1 && (
           <ObjectM3Wire
+            visible={!isReady3 || simpleModel}
             setLayers={setLayers2}
             hiddenLayers={hiddenLayers2}
             setReady={setReady2}
@@ -182,8 +187,9 @@ const Scene = () => {
         )}
 
         {/* Черновой меш */}
-        {isReady2 && !isReady4 && (
+        {isReady2 && (
           <ObjectM4Wire
+            visible={!isReady4 || simpleModel}
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
             setReady={setReady3}
@@ -195,6 +201,7 @@ const Scene = () => {
         {/* Blueprint rails */}
         {isReady3 && (
           <ObjectM3
+            visible={!simpleModel}
             setLayers={setLayers4}
             hiddenLayers={hiddenLayers4}
             setReady={setReady4}
@@ -206,6 +213,7 @@ const Scene = () => {
         {/* меш */}
         {isReady4 && (
           <ObjectM4
+            visible={!simpleModel}
             setLayers={setLayers5}
             hiddenLayers={hiddenLayers5}
             setReady={setReady5}

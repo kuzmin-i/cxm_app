@@ -79,6 +79,7 @@ const ObjectM3Wire = ({
   setReady = () => {},
   setPercentsLoaded = () => {},
   setLoadingObj = () => {},
+  visible,
 }) => {
   const [objects, setObjects] = useState([]);
 
@@ -93,9 +94,10 @@ const ObjectM3Wire = ({
           url="/models/big_rails_minmin1.3dm"
         />
 
-        {objects.map(({ object, layerIndex }, m) => {
-          return !hiddenLayers.includes(layerIndex) ? object : <></>;
-        })}
+        {visible &&
+          objects.map(({ object, layerIndex }, m) => {
+            return !hiddenLayers.includes(layerIndex) ? object : <></>;
+          })}
       </group>
     </Suspense>
   );
