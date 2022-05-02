@@ -12,7 +12,7 @@ const PlusIcon = () => {
       <path
         d="M13 0a1 1 0 011 1v11h11a1 1 0 110 2H14v11a1 1 0 11-2 0V14H1a1 1 0 010-2h11V1a1 1 0 011-1z"
         fill="currentColor"
-        fill-rule="evenodd"
+        fillRule="evenodd"
       ></path>
     </svg>
   );
