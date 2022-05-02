@@ -92,6 +92,9 @@ const Scene = () => {
     const clickOutside = (e) => {
       if (layersRef.current && !layersRef.current.contains(e.target))
         showLayersWindow(false);
+
+      if (pointsRef.current && !pointsRef.current.contains(e.target))
+        showPointsWindow(false);
     };
 
     window.addEventListener("click", clickOutside);
@@ -120,7 +123,9 @@ const Scene = () => {
       {pointsWindow && (
         <LayersWrapper ref={pointsRef}>
           <OverlayWrapper>
-            <Button size="large">Добавить точку</Button>
+            <Button size="large" style={{ border: "0px" }}>
+              Добавить точку
+            </Button>
           </OverlayWrapper>
         </LayersWrapper>
       )}
