@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import styled from "styled-components";
 
-import { Grid } from "antd";
+import { Button, Grid } from "antd";
 
 import ObjectM1 from "../models/m1";
 import Camera from "../scene-core/camera";
@@ -18,12 +18,14 @@ import Analyze from "../models/analyze";
 import ObjectM4Wire from "../models/m4-mesh_wire";
 import ObjectM3Surface from "../models/m3-rails_surface";
 
+import { OverlayWrapper } from "../ui/layers";
+
 const { useBreakpoint } = Grid;
 
 const LayersWrapper = styled.div`
   position: fixed;
-  left: 80px;
-  bottom: 40px;
+  left: 40px;
+  bottom: 140px;
   width: 100%;
   max-width: 250px;
 
@@ -39,6 +41,10 @@ const LayersWrapper = styled.div`
 
 const Scene = () => {
   const screens = useBreakpoint();
+
+  /* UI */
+  const [layersWindow, showLayersWindow] = useState(false);
+  const [pointsWindow, showPointsWindow] = useState(false);
 
   /* Common */
   const [layers1, setLayers1] = useState(null);
@@ -78,6 +84,23 @@ const Scene = () => {
 
   const [simpleModel, setSimpleModel] = useState(false);
 
+  /* область закрытия окна со слоями */
+  const layersRef = useRef();
+  const pointsRef = useRef();
+
+  useEffect(() => {
+    const clickOutside = (e) => {
+      if (layersRef.current && !layersRef.current.contains(e.target))
+        showLayersWindow(false);
+    };
+
+    window.addEventListener("click", clickOutside);
+
+    return () => {
+      window.removeEventListener("click", clickOutside);
+    };
+  }, []);
+
   return (
     <>
       <BottomNav
@@ -86,14 +109,24 @@ const Scene = () => {
           setView,
           loadingObj,
           percentsLoaded,
-          loadingVisible: !isReady4,
+          loadingVisible: !isReady5,
           simpleModel,
           setSimpleModel,
+          showLayersWindow,
+          showPointsWindow,
         }}
       />
 
-      {screens.sm && (
-        <LayersWrapper>
+      {pointsWindow && (
+        <LayersWrapper ref={pointsRef}>
+          <OverlayWrapper>
+            <Button size="large">Добавить точку</Button>
+          </OverlayWrapper>
+        </LayersWrapper>
+      )}
+
+      {layersWindow && (
+        <LayersWrapper ref={layersRef}>
           {layers1 && (
             <Layers
               data={layers1}
@@ -183,7 +216,7 @@ const Scene = () => {
         {/* Черновые рельсы */}
         {isReady1 && (
           <ObjectM3Wire
-            visible={!isReady3 || simpleModel}
+            visible={!isReady4 || simpleModel}
             setLayers={setLayers2}
             hiddenLayers={hiddenLayers2}
             setReady={setReady2}
@@ -195,7 +228,7 @@ const Scene = () => {
         {/* Черновой меш */}
         {isReady2 && (
           <ObjectM4Wire
-            visible={!isReady4 || simpleModel}
+            visible={!isReady5 || simpleModel}
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
             setReady={setReady3}

@@ -9,8 +9,8 @@ const Wrapper = styled.div`
   max-width: 250px;
 
   padding: 24px;
-  background: lightgrey;
-  border-radius: 10px;
+  background: white;
+  border-radius: 30px;
 
   font-size: 0.75rem;
 
@@ -20,12 +20,14 @@ const Wrapper = styled.div`
   z-index: 10;
 `;
 
+export const OverlayWrapper = Wrapper;
+
 const LayerWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   padding: 6px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
   justify-content: space-between;
 `;

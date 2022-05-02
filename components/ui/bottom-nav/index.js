@@ -2,20 +2,71 @@ import React from "react";
 import styled from "styled-components";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { Button, Radio, Spin, Space, Grid, Typography, Checkbox } from "antd";
+import {
+  Button,
+  Radio,
+  Spin,
+  Space,
+  Grid,
+  Typography,
+  Checkbox,
+  Dropdown,
+} from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
+
+import LayersIcon from "./icons/layers";
+import PlusIcon from "./icons/plus";
+
 const { useBreakpoint } = Grid;
 const { Text } = Typography;
 
 const Bottom = styled.div`
   position: fixed;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 10;
+  height: 60px;
+
+  ${({ position }) =>
+    position === "left"
+      ? `
+      left: 40px;
+    `
+      : ``}
+
+  ${({ position }) =>
+    position === "center"
+      ? `
+    left: 50%;
+    transform: translateX(-50%);
+  `
+      : ``}
+
+  ${({ position }) =>
+    position === "right"
+      ? `
+        left: auto;
+        right: 40px;
+      `
+      : ``}
 
   display: flex;
+
   && > * + * {
     margin-left: 10px;
+  }
+
+  .ant-btn-noborder {
+    border: 0px;
+    border-radius: 200px;
+  }
+
+  .ant-btn {
+    display: flex;
+    align-items: center;
+
+    & > * + * {
+      margin-left: 12px;
+    }
   }
 `;
 
@@ -76,6 +127,16 @@ const Disabling = styled.div`
   z-index: 11;
 `;
 
+const VR = styled.div`
+  position: relative;
+  width: 1px;
+  height: 60%;
+  background: rgba(0, 0, 0, 0.15);
+
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
 const antIcon = (
   <LoadingOutlined
     style={{
@@ -88,6 +149,34 @@ const antIcon = (
   />
 );
 
+const DropWindow = styled.div`
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+
+  margin-bottom: 24px;
+`;
+
+const openLayers = () => {
+  return (
+    <DropWindow>
+      <Space direction="vertical" size={40}>
+        <Space direction="vertical">
+          <div>Hello</div>
+          <div>Hello 1</div>
+          <div>Hello 2</div>
+        </Space>
+
+        <Space direction="vertical">
+          <div>Hello</div>
+          <div>Hello 1</div>
+          <div>Hello 2</div>
+        </Space>
+      </Space>
+    </DropWindow>
+  );
+};
+
 const BottomNav = ({
   view,
   setView,
@@ -96,6 +185,8 @@ const BottomNav = ({
   loadingVisible,
   simpleModel,
   setSimpleModel,
+  showLayersWindow = () => {},
+  showPointsWindow = () => {},
 }) => {
   const screens = useBreakpoint();
 
@@ -117,7 +208,45 @@ const BottomNav = ({
         </Loading>
       )}
 
-      <Bottom>
+      <Bottom position="left">
+        <Wrapper>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              showLayersWindow(true);
+            }}
+            icon={
+              <span style={{ fontSize: "24px" }}>
+                <LayersIcon />
+              </span>
+            }
+            size="large"
+            type="noborder"
+          >
+            Слои
+          </Button>
+
+          <VR />
+
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              showPointsWindow(true);
+            }}
+            icon={
+              <span style={{ fontSize: "24px" }}>
+                <PlusIcon />
+              </span>
+            }
+            size="large"
+            type="noborder"
+          >
+            Точки
+          </Button>
+        </Wrapper>
+      </Bottom>
+
+      <Bottom position="center">
         <Wrapper>
           <Radio.Group value={view} size="large" onChange={() => {}}>
             <Radio.Button value="ortho" onClick={() => setView("ortho")}>
@@ -128,7 +257,9 @@ const BottomNav = ({
             </Radio.Button>
           </Radio.Group>
         </Wrapper>
+      </Bottom>
 
+      <Bottom position="right">
         <Wrapper>
           {loadingVisible && <Disabling />}
 
