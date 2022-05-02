@@ -19,6 +19,7 @@ import ObjectM4Wire from "../models/m4-mesh_wire";
 import ObjectM3Surface from "../models/m3-rails_surface";
 
 import { OverlayWrapper } from "../ui/layers";
+import EditPanel from "../models/edit";
 
 const { useBreakpoint } = Grid;
 
@@ -41,6 +42,16 @@ const LayersWrapper = styled.div`
 
 const Scene = () => {
   const screens = useBreakpoint();
+  const [tooltip, showTooltip] = useState(false);
+
+  /* */
+  const [pointsGridData, setPointsGridData] = useState([]);
+  const [labelsData, setLabelsData] = useState([]);
+  /* */
+
+  const [pointType, setPointType] = useState(1);
+  const [pointPosition, setPointPosition] = useState([0, 0, 0]);
+  const [pointId, setPointId] = useState(null);
 
   /* UI */
   const [layersWindow, showLayersWindow] = useState(false);
@@ -207,7 +218,40 @@ const Scene = () => {
           />
         )*/}
 
-        <Analyze />
+        {tooltip && (
+          <EditPanel
+            {...{
+              showTooltip,
+              pointType,
+              setPointType,
+              pointPosition,
+              setPointPosition,
+              /* */
+              setPointsGridData,
+              pointsGridData,
+              pointId,
+              setLabelsData,
+              labelsData,
+            }}
+          />
+        )}
+        <Analyze
+          {...{
+            tooltip,
+            showTooltip,
+            pointType,
+            setPointType,
+            pointPosition,
+            setPointPosition,
+            /* */
+            pointsGridData,
+            setPointsGridData,
+            labelsData,
+            setLabelsData,
+            pointId,
+            setPointId,
+          }}
+        />
         {
           <ObjectM2
             setLayers={setLayers1}

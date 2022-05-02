@@ -21,13 +21,23 @@ const drawCircle = (r, useVector3) => {
   return points;
 };
 
-const Analyze = () => {
+const Analyze = ({
+  tooltip,
+  showTooltip,
+  pointType,
+  setPointType,
+  pointPosition,
+  setPointPosition,
+  pointsGridData = [],
+  setPointsGridData = () => {},
+  labelsData = [],
+  setLabelsData = () => {},
+  pointId = null,
+  setPointId = () => {},
+}) => {
   const [points, setPoints] = useState([]);
 
-  const [tooltip, showTooltip] = useState(false);
   const [tipPosition, setTipPosition] = useState([0, 0, 0]);
-
-  const [pointType, setPointType] = useState(1);
 
   const fetchTodos = async () => {
     const response = await fetch(
@@ -45,112 +55,115 @@ const Analyze = () => {
       pointgrid = [],
     } = collisions;
 
-    console.log("bounds", bounds);
-    console.log("contour", contour);
-    console.log("outlines", outlines);
-
-    const updated_pointgrid = pointgrid.map((point = [], i) => {
-      const label_type = labels[i];
-
-      let radius;
-      let color;
-
-      if (label_type === 0) {
-        radius = 0.45;
-        color = "#00FF85";
-      }
-      if (label_type === 1) {
-        radius = 0.45;
-        color = "#EBFF00";
-      }
-      if (label_type === 2) {
-        radius = 0.45;
-        color = "#FFB800";
-      }
-      if (label_type === 3) {
-        radius = 1;
-        color = "#FF6B00";
-      }
-      if (label_type === 4) {
-        radius = 1;
-        color = "#FB0707";
-      }
-
-      const x_offset = -70279 - 1270;
-      const y_offset = 32342.6 - 67846;
-
-      const [x0, y0, z0] = point;
-
-      const position = [
-        (x0 + x_offset) * 0.001,
-        (y0 + y_offset) * 0.001,
-        z0 * 0.001,
-      ];
-
-      const circle = drawCircle(radius, false);
-      const lineGeometry = new THREE.BufferGeometry().setFromPoints(circle);
-      /* const circle_obj = (
-        <line geometry={lineGeometry} position={position}>
-          <lineBasicMaterial attach="material" color={color} linewidth={100} />
-        </line>
-      );*/
-      const circle_obj = (
-        <group position={position}>
-          <Line points={circle} color={color} lineWidth={1} />
-          <Line
-            points={[
-              [0, 0, 0],
-              [0, 0, 5300 * 0.001],
-            ]}
-            color={color}
-            lineWidth={0.5}
-          />
-        </group>
-      );
-
-      return (
-        <React.Fragment key={`point:${i}`}>
-          {circle_obj}
-
-          <mesh
-            position={position}
-            scale={[radius * 2, radius * 2, radius * 2]}
-            onClick={() => {
-              showTooltip(true);
-              setPointType(label_type);
-              setTipPosition([position[0], position[1], 6]);
-            }}
-            onPointerOver={() => {
-              return (document.body.style.cursor = "pointer");
-            }}
-            onPointerOut={() => {
-              return (document.body.style.cursor = "auto");
-            }}
-          >
-            <planeBufferGeometry />
-            <meshStandardMaterial opacity={0} color={color} transparent />
-          </mesh>
-
-          <mesh position={position} scale={[0.1, 0.1, 0.1]}>
-            <planeBufferGeometry />
-            <meshStandardMaterial color={color} />
-          </mesh>
-        </React.Fragment>
-      );
-    });
-
-    setPoints(updated_pointgrid);
+    setPointsGridData(pointgrid);
+    setLabelsData(labels);
   };
 
   useEffect(() => {
     fetchTodos();
   }, []);
 
+  useEffect(() => {
+    if (pointsGridData.length > 0 && labelsData.length > 0) {
+      const pointgrid = pointsGridData;
+      const labels = labelsData;
+
+      const updated_pointgrid = pointgrid.map((point = [], i) => {
+        const label_type = labels[i];
+
+        let radius;
+        let color;
+
+        if (label_type === 0) {
+          radius = 0.45;
+          color = "#00FF85";
+        }
+        if (label_type === 1) {
+          radius = 0.45;
+          color = "#EBFF00";
+        }
+        if (label_type === 2) {
+          radius = 0.45;
+          color = "#FFB800";
+        }
+        if (label_type === 3) {
+          radius = 1;
+          color = "#FF6B00";
+        }
+        if (label_type === 4) {
+          radius = 1;
+          color = "#FB0707";
+        }
+
+        const x_offset = -70279 - 1270;
+        const y_offset = 32342.6 - 67846;
+
+        const [x0, y0, z0] = point;
+
+        const position = [
+          (x0 + x_offset) * 0.001,
+          (y0 + y_offset) * 0.001,
+          z0 * 0.001,
+        ];
+
+        const circle = drawCircle(radius, false);
+
+        const circle_obj = (
+          <group position={position}>
+            <Line points={circle} color={color} lineWidth={1} />
+            <Line
+              points={[
+                [0, 0, 0],
+                [0, 0, 5300 * 0.001],
+              ]}
+              color={color}
+              lineWidth={0.5}
+            />
+          </group>
+        );
+
+        return (
+          <React.Fragment key={`point:${i}`}>
+            {circle_obj}
+
+            <mesh
+              position={position}
+              scale={[radius * 2, radius * 2, radius * 2]}
+              onClick={() => {
+                showTooltip(true);
+                setPointId(i);
+                setPointType(label_type);
+                setTipPosition([position[0], position[1], 6]);
+                setPointPosition(point);
+              }}
+              onPointerOver={() => {
+                return (document.body.style.cursor = "pointer");
+              }}
+              onPointerOut={() => {
+                return (document.body.style.cursor = "auto");
+              }}
+            >
+              <planeBufferGeometry />
+              <meshStandardMaterial opacity={0} color={color} transparent />
+            </mesh>
+
+            <mesh position={position} scale={[0.1, 0.1, 0.1]}>
+              <planeBufferGeometry />
+              <meshStandardMaterial color={color} />
+            </mesh>
+          </React.Fragment>
+        );
+      });
+
+      setPoints(updated_pointgrid);
+    }
+  }, [pointsGridData, labelsData]);
+
   return (
     <group rotation={[(-90 / 180) * Math.PI, 0, 0]}>
       {points}
 
-      {tooltip && (
+      {tooltip && null && (
         <Html as="div" center position={tipPosition}>
           <div
             style={{
