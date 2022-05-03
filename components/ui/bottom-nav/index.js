@@ -187,6 +187,7 @@ const BottomNav = ({
   setSimpleModel,
   showLayersWindow = () => {},
   showPointsWindow = () => {},
+  newPointMode,
 }) => {
   const screens = useBreakpoint();
 
@@ -208,11 +209,20 @@ const BottomNav = ({
         </Loading>
       )}
 
+      {newPointMode && (
+        <Loading>
+          <Space align="center">
+            Кликните в любую область, чтобы создать точку
+          </Space>
+        </Loading>
+      )}
+
       <Bottom position="left">
         <Wrapper>
           <Button
             onClick={(e) => {
               e.stopPropagation();
+              showPointsWindow(false);
               showLayersWindow(true);
             }}
             icon={
@@ -231,6 +241,7 @@ const BottomNav = ({
           <Button
             onClick={(e) => {
               e.stopPropagation();
+              showLayersWindow(false);
               showPointsWindow(true);
             }}
             icon={

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as THREE from "three";
 import { Html, Row, Col } from "@react-three/drei";
 import { CloseOutlined } from "@ant-design/icons";
-import { Line } from "@react-three/drei";
+import { Line, TransformControls } from "@react-three/drei";
 
 const drawCircle = (r, useVector3) => {
   const points = [];
@@ -124,6 +124,14 @@ const Analyze = ({
 
         return (
           <React.Fragment key={`point:${i}`}>
+            {/*i === 175 ? (
+              <TransformControls mode="translate">
+                {circle_obj}
+              </TransformControls>
+            ) : (
+              circle_obj
+            )*/}
+
             {circle_obj}
 
             <mesh
@@ -159,97 +167,7 @@ const Analyze = ({
     }
   }, [pointsGridData, labelsData]);
 
-  return (
-    <group rotation={[(-90 / 180) * Math.PI, 0, 0]}>
-      {points}
-
-      {tooltip && null && (
-        <Html as="div" center position={tipPosition}>
-          <div
-            style={{
-              background: "white",
-              width: "300px",
-              borderRadius: "10px",
-              display: "flex",
-              flexDirection: "column",
-              padding: "12px",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "flex-end",
-              }}
-            >
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => showTooltip(false)}
-              >
-                {" "}
-                {/*<CloseOutlined />*/}X
-              </div>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "30px",
-                  fontWeight: "black",
-                  paddingRight: "12px",
-                }}
-              >
-                {pointType}
-              </span>
-
-              <span
-                style={{ fontSize: "11px", color: "grey", lineHeight: "1.2" }}
-              >
-                {pointType === 0
-                  ? "точка вне контура коммуникаций и нет ничего в радиусе 450"
-                  : pointType === 1
-                  ? "точка вне контура коммуникаций, но есть коммуникации в радиусе 450"
-                  : pointType === 2
-                  ? "в радиусе 450 есть свободное место"
-                  : pointType === 3
-                  ? "в радиусе 1000 есть свободное место"
-                  : pointType === 4
-                  ? "в радиусе 1000 нет свободного места"
-                  : ""}
-              </span>
-            </div>
-
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <div
-                style={{
-                  padding: "5px 16px",
-                  marginTop: "8px",
-                  fontSize: "12px",
-                  border: "1px solid black",
-                  borderRadius: "20px",
-                }}
-              >
-                Редактировать
-              </div>
-            </div>
-          </div>
-        </Html>
-      )}
-    </group>
-  );
+  return <group rotation={[(-90 / 180) * Math.PI, 0, 0]}>{points}</group>;
 };
 
 export default Analyze;

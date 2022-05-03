@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { OrthographicCamera, OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
 
 /* Настраиваем камеру */
 const Camera = (props = {}) => {
-  const { view, ...otherProps } = props;
+  const { view, setNewPointPosition = () => {}, ...otherProps } = props;
 
   const [ready, setReady] = useState(false);
 
@@ -46,11 +47,12 @@ const Camera = (props = {}) => {
       <OrbitControls
         minPolarAngle={0}
         maxPolarAngle={Math.PI * 0.3}
-        enableRotate={view === 'ortho'}
+        enableRotate={view === "ortho"}
         enableZoom
         enablePan
         ref={orbitRef}
         target={target0}
+        makeDefault
       />
     </>
   );
