@@ -49,7 +49,7 @@ const finishedNotification = (placement = "bottomRight") => {
   notification.success({
     message: "Данные обновлены",
     description:
-      "Расположены точек и их тип пересечения с коммуникациями обновлены",
+      "Расположение точек и их тип пересечения с коммуникациями обновлены",
     placement,
   });
 };
@@ -198,6 +198,8 @@ const EditPanel = ({
       const x = parseFloat(xValue.current.input.value);
       const y = parseFloat(yValue.current.input.value);
       const z = parseFloat(zValue.current.input.value);
+
+      setPointPosition([x, y, z]);
 
       setPointsGridData((state) => {
         let data = [...state];

@@ -161,10 +161,6 @@ const Scene = () => {
     });
   };
 
-  useEffect(() => {
-    console.log("d1", pointPosition);
-  }, [pointPosition]);
-
   return (
     <>
       <BottomNav
@@ -187,8 +183,18 @@ const Scene = () => {
           <OverlayWrapper>
             <Button
               onClick={() => {
-                setView("top");
-                openNewPointMode(true);
+                const x_offset = -70279 - 1270;
+                const y_offset = 32342.6 - 67846;
+
+                setPointsGridData((state) => [
+                  ...state,
+                  [-x_offset, -y_offset, 0],
+                ]);
+                setLabelsData((state) => [...state, 0]);
+                setPointId(pointsGridData.length);
+                setPointPosition([-x_offset, -y_offset, 0]);
+                setPointType(0);
+                showTooltip(true);
               }}
               size="large"
               style={{ border: "0px" }}
