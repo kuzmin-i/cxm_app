@@ -82,6 +82,7 @@ const Statistics = ({ data = [] }) => {
 
               return (
                 <Item
+                  key={`st:${b}:${i}`}
                   color={color}
                   index={b}
                   data-gradient={
