@@ -56,6 +56,7 @@ const ObjectM2 = ({
   setReady = () => {},
   setPercentsLoaded = () => {},
   setLoadingObj = () => {},
+  visible = true,
 }) => {
   const [objects, setObjects] = useState([]);
 
@@ -70,9 +71,10 @@ const ObjectM2 = ({
           url="/models/big_common.3dm"
         />
 
-        {objects.map(({ object, layerIndex }, m) => {
-          return !hiddenLayers.includes(layerIndex) ? object : <></>;
-        })}
+        {visible &&
+          objects.map(({ object, layerIndex }, m) => {
+            return !hiddenLayers.includes(layerIndex) ? object : <></>;
+          })}
       </group>
     </Suspense>
   );

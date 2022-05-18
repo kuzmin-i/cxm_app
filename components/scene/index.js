@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import Analyze from "../models/analyze";
 import ObjectM4Wire from "../models/m4-mesh_wire";
 import ObjectM3Surface from "../models/m3-rails_surface";
+import Statistics from "../ui/statistics";
 
 import { TransformControls } from "@react-three/drei";
 
@@ -48,9 +49,24 @@ const Scene = () => {
 
   const [newPointMode, openNewPointMode] = useState(false);
 
+  /* Statistics */
+  const [uniqueLabelsStatistics, setUniqueLabelsStatistics] = useState([]);
+  const [uniqueRacksStatistics, setUniqueRacksStatistics] = useState([]);
+
   /* */
   const [pointsGridData, setPointsGridData] = useState([]);
+  const [axisGridData, setAxisGridData] = useState([]);
   const [labelsData, setLabelsData] = useState([]);
+
+  const [axis_visible, setAxis_visible] = useState(true);
+  const [points_visible, setPoints_visible] = useState(true);
+
+  const [highData, setHighData] = useState([]);
+  const [verticalData, setVerticalData] = useState([]);
+  const [lowData, setLowData] = useState([]);
+
+  const [roofSurf_visible, setRoofSurf_visible] = useState(true);
+  const [base_visible, setBase_visible] = useState(true);
   /* */
 
   /* */
@@ -69,6 +85,8 @@ const Scene = () => {
   const [layers1, setLayers1] = useState(null);
   const [hiddenLayers1, setHiddenLayers1] = useState([]);
   const [isReady1, setReady1] = useState(false);
+
+  const [grid_visible, setGridVisible] = useState(true);
 
   /* RailsWire */
   const [layers2, setLayers2] = useState(null);
@@ -90,10 +108,7 @@ const Scene = () => {
   const [hiddenLayers5, setHiddenLayers5] = useState([]);
   const [isReady5, setReady5] = useState(false);
 
-  /* Surface */
-  const [layers6, setLayers6] = useState(null);
-  const [hiddenLayers6, setHiddenLayers6] = useState([]);
-  const [isReady6, setReady6] = useState(false);
+  const [mesh_visible, setMesh_visible] = useState(true);
 
   /* */
   const [view, setView] = useState("ortho");
@@ -140,6 +155,7 @@ const Scene = () => {
 
   const transformRef = useRef();
 
+  /* Пересчитать координаты точки при transformControls */
   const handleFinished = (offset = {}) => {
     // x, y, z
     // x, z, -y
@@ -207,53 +223,66 @@ const Scene = () => {
 
       {layersWindow && (
         <LayersWrapper ref={layersRef}>
-          {layers1 && (
-            <Layers
-              data={layers1}
-              {...{
-                hiddenLayers: hiddenLayers1,
-                setHiddenLayers: setHiddenLayers1,
-              }}
-            />
-          )}
-          {layers2 && isReady1 && (!layers4 || simpleModel) && (
-            <Layers
-              one
-              data={layers2}
-              {...{
-                hiddenLayers: hiddenLayers2,
-                setHiddenLayers: setHiddenLayers2,
-              }}
-            />
-          )}
-          {layers3 && isReady2 && (!layers5 || simpleModel) && (
-            <Layers
-              data={layers3}
-              {...{
-                hiddenLayers: hiddenLayers3,
-                setHiddenLayers: setHiddenLayers3,
-              }}
-            />
-          )}
-          {layers4 && isReady3 && !simpleModel && (
-            <Layers
-              data={layers4}
-              {...{
-                hiddenLayers: hiddenLayers4,
-                setHiddenLayers: setHiddenLayers4,
-              }}
-            />
-          )}
-          {layers5 && isReady4 && !simpleModel && (
-            <Layers
-              data={layers5}
-              {...{
-                hiddenLayers: hiddenLayers5,
-                setHiddenLayers: setHiddenLayers5,
-              }}
-            />
-          )}
+          <Layers
+            data={[
+              {
+                color: { r: 255, g: 0, b: 0, a: 255 },
+                name: "Стойки",
+                visible: axis_visible,
+                setVisible: setAxis_visible,
+              },
+              {
+                color: { r: 0, g: 255, b: 0, a: 255 },
+                name: "Неиспользованные точки",
+                visible: points_visible,
+                setVisible: setPoints_visible,
+              },
+              {
+                color: { r: 0, g: 255, b: 0, a: 255 },
+                name: "Плоскости крыши",
+                visible: roofSurf_visible,
+                setVisible: setRoofSurf_visible,
+              },
+              {
+                color: { r: 0, g: 255, b: 0, a: 255 },
+                name: "Основание",
+                visible: base_visible,
+                setVisible: setBase_visible,
+              },
+              {
+                color: { r: 0, g: 255, b: 0, a: 255 },
+                name: "Коммуникации",
+                visible: mesh_visible,
+                setVisible: setMesh_visible,
+              },
+            ]}
+            fixedData={[
+              {
+                color: { r: 255, g: 0, b: 0, a: 255 },
+                name: "Сетка",
+                visible: grid_visible,
+                setVisible: setGridVisible,
+              },
+            ]}
+          />
         </LayersWrapper>
+      )}
+
+      {uniqueLabelsStatistics.length > 0 && uniqueRacksStatistics.length > 0 && (
+        <Statistics
+          data={[
+            {
+              type: "labels",
+              name: "Уникальные лейблы",
+              data: uniqueLabelsStatistics,
+            },
+            {
+              type: "racks",
+              name: "Уникальные длины стоек",
+              data: uniqueRacksStatistics,
+            },
+          ]}
+        />
       )}
 
       {tooltip && (
@@ -270,6 +299,9 @@ const Scene = () => {
             pointId,
             setLabelsData,
             labelsData,
+            /* */
+            axisGridData,
+            setAxisGridData,
           }}
         />
       )}
@@ -291,15 +323,6 @@ const Scene = () => {
 
         <ambientLight />
         <pointLight position={[50, 50, 60]} intensity={8} />
-        {/*<mesh position={[50, 50, 60]} scale={[10, 10, 10]}>
-          <planeBufferGeometry />
-          <meshStandardMaterial color={"red"} />
-        </mesh>*/}
-        {/*null && (
-          <ObjectM1
-            {...{ setActiveLayers, objects, setObjects, hiddenLayers }}
-          />
-        )*/}
 
         {tooltip && (
           <TransformControls
@@ -330,10 +353,29 @@ const Scene = () => {
             setLabelsData,
             pointId,
             setPointId,
+            /* */
+            axisGridData,
+            setAxisGridData,
+            /* */
+            verticalData,
+            setVerticalData,
+            highData,
+            setHighData,
+            lowData,
+            setLowData,
+            /* */
+            roofSurf_visible,
+            base_visible,
+            points_visible,
+            axis_visible,
+            /* */
+            setUniqueLabelsStatistics,
+            setUniqueRacksStatistics,
           }}
         />
         {
           <ObjectM2
+            visible={grid_visible}
             setLayers={setLayers1}
             hiddenLayers={hiddenLayers1}
             setReady={setReady1}
@@ -342,22 +384,10 @@ const Scene = () => {
           />
         }
 
-        {/* Черновые рельсы */}
-        {isReady1 && (
-          <ObjectM3Wire
-            visible={!isReady4 || simpleModel}
-            setLayers={setLayers2}
-            hiddenLayers={hiddenLayers2}
-            setReady={setReady2}
-            setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Крыша")}
-          />
-        )}
-
         {/* Черновой меш */}
-        {isReady2 && (
+        {isReady1 && (
           <ObjectM4Wire
-            visible={!isReady5 || simpleModel}
+            visible={mesh_visible && simpleModel}
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
             setReady={setReady3}
@@ -366,33 +396,10 @@ const Scene = () => {
           />
         )}
 
-        {/* Blueprint rails */}
-        {isReady3 && (
-          <ObjectM3
-            visible={!simpleModel}
-            setLayers={setLayers4}
-            hiddenLayers={hiddenLayers4}
-            setReady={setReady4}
-            setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Крыша (высокое качество)")}
-          />
-        )}
-        {/* Плоскость */}
-        {null && isReady2 && (
-          <ObjectM3Surface
-            visible={true}
-            setLayers={setLayers6}
-            hiddenLayers={hiddenLayers6}
-            setReady={setReady6}
-            setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Плоскость крыши")}
-          />
-        )}
-
         {/* меш */}
-        {isReady4 && (
+        {isReady3 && (
           <ObjectM4
-            visible={!simpleModel}
+            visible={mesh_visible && !simpleModel}
             setLayers={setLayers5}
             hiddenLayers={hiddenLayers5}
             setReady={setReady5}
@@ -408,3 +415,27 @@ const Scene = () => {
 };
 
 export default Scene;
+
+/* Черновые рельсы */
+/*isReady1 && (
+  <ObjectM3Wire
+    visible={!isReady4 || simpleModel}
+    setLayers={setLayers2}
+    hiddenLayers={hiddenLayers2}
+    setReady={setReady2}
+    setPercentsLoaded={setPercentsLoaded}
+    setLoadingObj={() => setLoadingObj("Крыша")}
+  />
+        )*/
+
+/* Blueprint rails */
+/*isReady3 && (
+  <ObjectM3
+    visible={!simpleModel}
+    setLayers={setLayers4}
+    hiddenLayers={hiddenLayers4}
+    setReady={setReady4}
+    setPercentsLoaded={setPercentsLoaded}
+    setLoadingObj={() => setLoadingObj("Крыша (высокое качество)")}
+  />
+)*/

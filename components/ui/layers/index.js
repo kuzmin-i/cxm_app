@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Checkbox } from "antd";
 import { useEffect } from "react";
+import { EyeInvisibleOutlined } from "@ant-design/icons";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,75 +21,95 @@ const Wrapper = styled.div`
   z-index: 10;
 `;
 
+const ScrollWrapper = styled.div`
+  width: 100%;
+  max-height: 500px;
+  overflow: scroll;
+`;
+
+const FixedWrapper = styled.div`
+  width: 100%;
+  border-top: 2px solid lightgrey;
+`;
+
 export const OverlayWrapper = Wrapper;
 
 const LayerWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  height: 58px;
 
   justify-content: space-between;
+
+  &&[data-visible="hidden"] {
+    opacity: 0.4;
+  }
 `;
 
 const Label = styled.div`
   display: flex;
   align-items: center;
 
+  font-size: 12px;
+  line-height: 1.2;
+
   &&::before {
     content: "";
-    min-width: 10px;
-    height: 10px;
-    border-radius: 50%;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 10px;
     background-color: ${({ color }) => (color ? color : "red")};
-    margin-right: 8px;
+    margin-right: 12px;
   }
 `;
 
-const Layer = ({ name, color, hiddenLayers = [], setHiddenLayers, index }) => {
+const ActionLayer = styled.div`
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0.5;
+`;
+
+const Layer = ({ name, color, visible = false, setVisible = () => {} }) => {
   const { r = 255, g = 0, b = 0 } = color ? color : {};
-  const hexColor = `rgb(${r}, ${g}, ${b})`;
+  /*const hexColor = `rgb(${r}, ${g}, ${b})`;*/
+  const hexColor = "lightgrey";
 
   const handleCheck = (e) => {
-    if (!hiddenLayers.includes(index))
-      return setHiddenLayers((state) => [...state, index]);
-
-    if (hiddenLayers.includes(index))
-      return setHiddenLayers((state) => state.filter((key) => key !== index));
+    setVisible(!visible);
   };
 
   return (
-    <LayerWrapper>
+    <LayerWrapper data-visible={visible ? "visible" : "hidden"}>
       <Label color={hexColor}>{name}</Label>
 
-      <Checkbox
-        checked={hiddenLayers.includes(index) ? false : true}
-        onChange={handleCheck}
-      />
+      <ActionLayer
+        data-visible={visible ? "visible" : "hidden"}
+        onClick={handleCheck}
+      >
+        <EyeInvisibleOutlined />
+      </ActionLayer>
+      {/*<Checkbox checked={visible} onChange={handleCheck} />*/}
     </LayerWrapper>
   );
 };
 
-const Layers = ({
-  data = [],
-  hiddenLayers,
-  setHiddenLayers = () => {},
-  hideLayer = true,
-  setHideLayer = () => {},
-}) => {
+const Layers = ({ data = [], fixedData = [] }) => {
   return (
     <Wrapper>
-      {data.map(({ ...props }, i) => {
-        return (
-          <Layer
-            {...props}
-            index={i}
-            {...{ hiddenLayers, setHiddenLayers, hideLayer, setHideLayer }}
-            key={`layer::${i}`}
-          />
-        );
-      })}
+      <ScrollWrapper>
+        {data.map(({ ...props }, i) => {
+          return <Layer {...props} index={i} key={`layer::${i}`} />;
+        })}
+      </ScrollWrapper>
+
+      <FixedWrapper>
+        {fixedData.map(({ ...props }, i) => {
+          return <Layer {...props} index={i} key={`layer::${i}`} />;
+        })}
+      </FixedWrapper>
     </Wrapper>
   );
 };

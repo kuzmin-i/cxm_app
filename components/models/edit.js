@@ -54,6 +54,33 @@ const finishedNotification = (placement = "bottomRight") => {
   });
 };
 
+const handleRacks = async ({
+  data: pointsGridData,
+  setAxisGridData = () => {},
+}) => {
+  const response = await fetch(
+    "https://mmodel.contextmachine.online:8443/mmodel_method/get_column_axis",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        kwargs: {
+          pointgrid: pointsGridData,
+        },
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  const { get_column_axis = {} } = data;
+  const { column_axis = [] } = get_column_axis;
+
+  setAxisGridData(column_axis);
+};
+
 const handlePost = async ({
   data: pointsGridData,
   setPointsGridData,
@@ -96,78 +123,11 @@ const EditPanel = ({
   setPointsGridData = () => {},
   pointsGridData = [],
   setLabelsData = () => {},
+  axisGridData = [],
+  setAxisGridData = () => {},
   labelsData = [],
   pointId,
 }) => {
-  /*const [{ type, x, y, z }, set] = useControls(() => ({
-    type: { options: ["0", "1", "2", "3", "4"] },
-    " ": { value: "the text", editable: false },
-    x: 0,
-    y: 0,
-    z: 0,
-    "Сохранить точку": button((get) => {
-      console.log(get);
-    }),
-    "Удалить точку": button((get) => console.log("saved")),
-    "Закрыть панель": button((get) => showTooltip(false)),
-  }));
-
-  useEffect(() => {
-    set({
-      "Сохранить точку": { hello: "hello" },
-    });
-  }, [pointsGridData]);
-
-  useEffect(() => {
-    setPointsGridData((state) => {
-      let data = [...state];
-      data[pointId] = [x, y, z];
-
-      return data;
-    });
-  }, [pointId, x, y, z]);
-
-  useEffect(() => {
-    setLabelsData((state) => {
-      let data = [...state];
-      data[pointId] = parseInt(type);
-
-      return data;
-    });
-  }, [pointId, type]);
-
-  useEffect(() => {
-    const type = pointType.toString();
-
-    let descr;
-
-    switch (type) {
-      case "0":
-        descr = "точка вне контура коммуникаций и нет ничего в радиусе 450";
-        break;
-      case "1":
-        descr =
-          "точка вне контура коммуникаций, но есть коммуникации в радиусе 450";
-        break;
-      case "2":
-        descr = "в радиусе 450 есть свободное место";
-        break;
-      case "3":
-        descr = "в радиусе 1000 есть свободное место";
-        break;
-      case "4":
-        descr = "в радиусе 1000 нет свободного места";
-        break;
-    }
-
-    set({
-      type: pointType.toString(),
-      x: pointPosition[0],
-      y: pointPosition[1],
-      z: pointPosition[2],
-      " ": descr,
-    });
-  }, [pointType, pointPosition]);*/
   const descr = useMemo(() => {
     const type = pointType.toString();
 
@@ -268,6 +228,12 @@ const EditPanel = ({
             <Button
               onClick={() => {
                 showTooltip(false);
+
+                handleRacks({
+                  data: pointsGridData,
+                  setAxisGridData,
+                });
+
                 return handlePost({
                   data: pointsGridData,
                   setPointsGridData,

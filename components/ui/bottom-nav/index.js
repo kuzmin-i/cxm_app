@@ -20,6 +20,16 @@ import PlusIcon from "./icons/plus";
 const { useBreakpoint } = Grid;
 const { Text } = Typography;
 
+const Top = styled.div`
+  position: fixed;
+  top: 40px;
+  z-index: 10;
+  height: 60px;
+  display: flex;
+
+  left: 40px;
+`;
+
 const Bottom = styled.div`
   position: fixed;
   bottom: 40px;
@@ -270,7 +280,7 @@ const BottomNav = ({
         </Wrapper>
       </Bottom>
 
-      <Bottom position="right">
+      <Top position="right">
         <Wrapper>
           {loadingVisible && <Disabling />}
 
@@ -282,7 +292,7 @@ const BottomNav = ({
             Упростить модель
           </Checkbox>
         </Wrapper>
-      </Bottom>
+      </Top>
     </>
   );
 };
