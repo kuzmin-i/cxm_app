@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { OrthographicCamera, OrbitControls } from "@react-three/drei";
+import {
+  OrthographicCamera,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import * as THREE from "three";
 
 /* Настраиваем камеру */
@@ -14,16 +18,22 @@ const Camera = (props = {}) => {
 
   const orbitRef = useRef();
   const cameraRef = useRef();
+  const camera1Ref = useRef();
 
   useEffect(() => {
     setReady(true);
   }, []);
 
   useEffect(() => {
-    if (orbitRef && orbitRef.current && ready) {
+    if (orbitRef && orbitRef.current && view && ready) {
       orbitRef.current.reset();
       setPosition([0, 0, 800]);
       setTarget0([0, 0, 0]);
+
+      if (view === "perspective") {
+        orbitRef.current.setPolarAngle((32 * Math.PI) / 180);
+        orbitRef.current.setAzimuthalAngle((-45 * Math.PI) / 180);
+      }
 
       if (view === "ortho") {
         orbitRef.current.setPolarAngle((32 * Math.PI) / 180);
@@ -39,14 +49,22 @@ const Camera = (props = {}) => {
 
   return (
     <>
-      <OrthographicCamera
-        ref={cameraRef}
-        makeDefault
-        {...{ zoom, position, rotation: [0, 0, 0] }}
-      />
+      {view === "ortho" || view === "top" ? (
+        <OrthographicCamera
+          ref={cameraRef}
+          makeDefault
+          {...{ zoom, position, rotation: [0, 0, 0] }}
+        />
+      ) : (
+        <perspectiveCamera
+          ref={camera1Ref}
+          makeDefault
+          {...{ zoom, position, rotation: [0, 0, 0] }}
+        />
+      )}
       <OrbitControls
         minPolarAngle={0}
-        maxPolarAngle={Math.PI * 0.3}
+        maxPolarAngle={Math.PI * 0.7}
         enableRotate={view === "ortho"}
         enableZoom
         enablePan

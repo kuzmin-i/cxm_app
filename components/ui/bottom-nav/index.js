@@ -16,6 +16,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 
 import LayersIcon from "./icons/layers";
 import PlusIcon from "./icons/plus";
+import useStore from "../../../store/store";
 
 const { useBreakpoint } = Grid;
 const { Text } = Typography;
@@ -27,14 +28,29 @@ const Top = styled.div`
   height: 60px;
   display: flex;
 
-  left: 40px;
+  ${({ position }) =>
+    position === "left"
+      ? `
+    & {
+      left: 40px;
+    }
+    `
+      : position === "right"
+      ? `
+    
+      & {
+        right: 40px
+      }
+    `
+      : `& {
+        left: 0px
+      `}
 `;
 
 const Bottom = styled.div`
   position: fixed;
   bottom: 40px;
   z-index: 10;
-  height: 60px;
 
   ${({ position }) =>
     position === "left"
@@ -86,10 +102,22 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
 
+  &&& button {
+    box-shadow: inherit;
+  }
+
+  height: 60px;
+
   border-radius: 200px;
 
   padding: 10px;
   background: white;
+
+  &&&[data-size="large"] {
+    height: 80px;
+    padding: 10px 30px;
+    transform: translateY(10px);
+  }
 
   && .ant-radio-button-wrapper {
     border-radius: 200px;
@@ -201,6 +229,10 @@ const BottomNav = ({
 }) => {
   const screens = useBreakpoint();
 
+  const setShowInfographics = useStore(
+    ({ setShowInfographics }) => setShowInfographics
+  );
+
   return (
     <>
       {loadingVisible && (
@@ -268,10 +300,30 @@ const BottomNav = ({
       </Bottom>
 
       <Bottom position="center">
-        <Wrapper>
+        <Wrapper
+          data-size="large"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowInfographics(true);
+          }}
+        >
+          <Button size="large" type="noborder">
+            Показать инфографику
+          </Button>
+        </Wrapper>
+      </Bottom>
+
+      <Bottom position="right">
+        <Wrapper data-type="radio">
           <Radio.Group value={view} size="large" onChange={() => {}}>
+            <Radio.Button
+              value="perspective"
+              onClick={() => setView("perspective")}
+            >
+              Перспектива
+            </Radio.Button>
             <Radio.Button value="ortho" onClick={() => setView("ortho")}>
-              Ортогональный вид
+              Орто
             </Radio.Button>
             <Radio.Button value="top" onClick={() => setView("top")}>
               План
@@ -280,19 +332,21 @@ const BottomNav = ({
         </Wrapper>
       </Bottom>
 
-      <Top position="right">
-        <Wrapper>
-          {loadingVisible && <Disabling />}
+      {null && (
+        <Top position="left">
+          <Wrapper>
+            {loadingVisible && <Disabling />}
 
-          <Checkbox
-            style={{ opacity: loadingVisible ? 0.5 : 1 }}
-            checked={simpleModel}
-            onChange={(e) => setSimpleModel(!simpleModel)}
-          >
-            Упростить модель
-          </Checkbox>
-        </Wrapper>
-      </Top>
+            <Checkbox
+              style={{ opacity: loadingVisible ? 0.5 : 1 }}
+              checked={simpleModel}
+              onChange={(e) => setSimpleModel(!simpleModel)}
+            >
+              Упростить модель
+            </Checkbox>
+          </Wrapper>
+        </Top>
+      )}
     </>
   );
 };

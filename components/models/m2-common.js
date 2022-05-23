@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { useProgress } from "@react-three/drei";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader";
+import useStore from "../../store/store";
 
 const Loader = ({ setPercentsLoaded, setLoadingObj }) => {
   const { progress } = useProgress();
@@ -60,6 +61,14 @@ const ObjectM2 = ({
 }) => {
   const [objects, setObjects] = useState([]);
 
+  const selectedLength = useStore(({ selectedLength }) => selectedLength);
+  const infoSection = useStore(({ infoSection }) => infoSection);
+  const selectedAccess = useStore(({ selectedAccess }) => selectedAccess);
+
+  const if_needsHide =
+    (infoSection === "racks" && selectedLength) ||
+    (infoSection === "access" && selectedAccess);
+
   return (
     <Suspense fallback={<Loader {...{ setPercentsLoaded, setLoadingObj }} />}>
       <group
@@ -72,6 +81,7 @@ const ObjectM2 = ({
         />
 
         {visible &&
+          !if_needsHide &&
           objects.map(({ object, layerIndex }, m) => {
             return !hiddenLayers.includes(layerIndex) ? object : <></>;
           })}

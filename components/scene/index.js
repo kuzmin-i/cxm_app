@@ -23,6 +23,9 @@ import { TransformControls } from "@react-three/drei";
 
 import { OverlayWrapper } from "../ui/layers";
 import EditPanel from "../models/edit";
+import InfographicsPanel from "../ui/infographics-panel";
+
+import useStore from "../../store/store";
 
 const { useBreakpoint } = Grid;
 
@@ -194,6 +197,14 @@ const Scene = () => {
         }}
       />
 
+      {uniqueLabelsStatistics.length > 0 &&
+        uniqueRacksStatistics.length > 0 && (
+          <InfographicsPanel
+            labels={uniqueLabelsStatistics}
+            racks={uniqueRacksStatistics}
+          />
+        )}
+
       {pointsWindow && (
         <LayersWrapper ref={pointsRef}>
           <OverlayWrapper>
@@ -268,22 +279,24 @@ const Scene = () => {
         </LayersWrapper>
       )}
 
-      {uniqueLabelsStatistics.length > 0 && uniqueRacksStatistics.length > 0 && (
-        <Statistics
-          data={[
-            {
-              type: "labels",
-              name: "Уникальные лейблы",
-              data: uniqueLabelsStatistics,
-            },
-            {
-              type: "racks",
-              name: "Уникальные длины стоек",
-              data: uniqueRacksStatistics,
-            },
-          ]}
-        />
-      )}
+      {null &&
+        uniqueLabelsStatistics.length > 0 &&
+        uniqueRacksStatistics.length > 0 && (
+          <Statistics
+            data={[
+              {
+                type: "labels",
+                name: "Уникальные лейблы",
+                data: uniqueLabelsStatistics,
+              },
+              {
+                type: "racks",
+                name: "Уникальные длины стоек",
+                data: uniqueRacksStatistics,
+              },
+            ]}
+          />
+        )}
 
       {tooltip && (
         <EditPanel

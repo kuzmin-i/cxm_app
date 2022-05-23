@@ -8,6 +8,8 @@ import handleSurfaces from "./utils/handle-surfaces";
 import { handleCorrectPosition } from "./utils/handle-correct-position";
 import handleColor from "./utils/handle-color";
 
+import useStore from "../../store/store";
+
 const drawCircle = (r, useVector3) => {
   const points = [];
   const segments = 16;
@@ -65,6 +67,11 @@ const Analyze = ({
 
   const [tipPosition, setTipPosition] = useState([0, 0, 0]);
 
+  /* */
+  const selectedLength = useStore(({ selectedLength }) => selectedLength);
+  const selectedAccess = useStore(({ selectedAccess }) => selectedAccess);
+  const infoSection = useStore(({ infoSection }) => infoSection);
+
   const fetchTodos = async () => {
     /* Берет точки */
     const fetched_collisions = await fetch(
@@ -91,8 +98,6 @@ const Analyze = ({
 
     const { column_axis = [], zmask = {} } = get_column_axis;
     const { high = [], vertical = [], low = [] } = zmask;
-
-    console.log("get_column_axis", get_column_axis);
 
     setAxisGridData(column_axis);
     setPointsGridData(pointgrid);
@@ -157,7 +162,7 @@ const Analyze = ({
         );
 
         return (
-          <React.Fragment key={`axis${i}`}>
+          <React.Fragment key={`axis,${i}:${length}:${label_type}`}>
             <Line points={[sPoints, ePoints]} color={"red"} lineWidth={0.5} />
 
             {circle_obj}
@@ -260,7 +265,7 @@ const Analyze = ({
         );
 
         return (
-          <React.Fragment key={`point:${i}`}>
+          <React.Fragment key={`point,${i}:${label_type}`}>
             {circle_obj}
 
             <mesh
@@ -302,12 +307,30 @@ const Analyze = ({
       high = [],
       low = [],
       vertical = [],
-    } = handleSurfaces(highData, lowData, verticalData);
+    } = handleSurfaces(
+      highData,
+      lowData,
+      verticalData,
+      selectedLength,
+      selectedAccess,
+      infoSection
+    );
 
     setHighPolygon(high);
     setLowPolygon(low);
     setVerticalPolygon(vertical);
-  }, [highData, lowData, verticalData]);
+  }, [
+    highData,
+    lowData,
+    verticalData,
+    selectedLength,
+    selectedAccess,
+    infoSection,
+  ]);
+
+  const if_needsHide =
+    (infoSection === "racks" && selectedLength) ||
+    (infoSection === "access" && selectedAccess);
 
   return (
     <group rotation={[(-90 / 180) * Math.PI, 0, 0]}>
@@ -316,8 +339,36 @@ const Analyze = ({
 
       {base_visible && lowPolygon}
 
-      {points_visible && points}
-      {axis_visible && axis}
+      {points_visible &&
+        points.map((item = {}) => {
+          if (if_needsHide) return;
+
+          return item;
+        })}
+
+      {axis_visible &&
+        axis.map((item = {}) => {
+          const { key } = item;
+
+          const length = key.split(":")?.[1];
+          const labelIndex = key.split(":")?.[2];
+
+          if (
+            infoSection === "racks" &&
+            selectedLength &&
+            selectedLength !== length
+          )
+            return;
+
+          if (
+            infoSection === "access" &&
+            selectedAccess &&
+            parseInt(selectedAccess) !== parseInt(labelIndex)
+          )
+            return;
+
+          return item;
+        })}
     </group>
   );
 };

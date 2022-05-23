@@ -45,10 +45,23 @@ const extrudeCfgs = {
 };
 
 /* ********* */
-const handleSurfaces = (highData = [], lowData = [], verticalData = []) => {
+const handleSurfaces = (
+  highData = [],
+  lowData = [],
+  verticalData = [],
+  selectedLength = null,
+  selectedAccess = null,
+  infoSection = null
+) => {
   let high_pol;
   let low_pol;
   let vert_pol;
+
+  const opacity_ifHalfHidden = 0.2;
+
+  const if_needsHide =
+    (infoSection === "racks" && selectedLength) ||
+    (infoSection === "access" && selectedAccess);
 
   if (highData.length > 0) {
     high_pol = highData.map((polygon = [], i) => {
@@ -65,7 +78,11 @@ const handleSurfaces = (highData = [], lowData = [], verticalData = []) => {
           args={[shape, extrudeCfgs]}
           key={`high:${i}`}
         >
-          <meshStandardMaterial color="hotpink" transparent opacity={0.8} />
+          <meshStandardMaterial
+            color="hotpink"
+            transparent
+            opacity={!if_needsHide ? 0.8 : opacity_ifHalfHidden}
+          />
         </Extrude>
       );
     });
@@ -81,7 +98,11 @@ const handleSurfaces = (highData = [], lowData = [], verticalData = []) => {
 
       return (
         <Extrude position={center} args={[shape, extrudeCfgs]} key={`low${i}`}>
-          <meshStandardMaterial color="blue" transparent opacity={0.6} />
+          <meshStandardMaterial
+            color="blue"
+            transparent
+            opacity={!if_needsHide ? 0.6 : opacity_ifHalfHidden}
+          />
         </Extrude>
       );
     });
@@ -102,7 +123,11 @@ const handleSurfaces = (highData = [], lowData = [], verticalData = []) => {
           key={`vert:${i}`}
         >
           <Extrude args={[shape, extrudeCfgs]}>
-            <meshStandardMaterial color="green" transparent opacity={0.6} />
+            <meshStandardMaterial
+              color="green"
+              transparent
+              opacity={!if_needsHide ? 0.6 : opacity_ifHalfHidden}
+            />
           </Extrude>
         </group>
       );

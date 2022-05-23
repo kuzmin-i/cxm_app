@@ -4,6 +4,7 @@ import { useProgress } from "@react-three/drei";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader";
 
 import { MeshStandardMaterial } from "three";
+import useStore from "../../store/store";
 
 const Loader = ({ setPercentsLoaded, setLoadingObj }) => {
   const { progress } = useProgress();
@@ -68,6 +69,25 @@ const ObjectM4 = ({
   visible,
 }) => {
   const [objects, setObjects] = useState([]);
+
+  const selectedLength = useStore(({ selectedLength }) => selectedLength);
+  const infoSection = useStore(({ infoSection }) => infoSection);
+  const selectedAccess = useStore(({ selectedAccess }) => selectedAccess);
+
+  const if_needsHide =
+    (infoSection === "racks" && selectedLength) ||
+    (infoSection === "access" && selectedAccess);
+
+  useEffect(() => {
+    if (objects && objects.length > 0)
+      setObjects((layers) =>
+        layers.map((layer) => {
+          layer.object.props.material.opacity = !if_needsHide ? 0.7 : 0.1;
+
+          return layer;
+        })
+      );
+  }, [selectedLength, objects]);
 
   return (
     <Suspense fallback={<Loader {...{ setPercentsLoaded, setLoadingObj }} />}>

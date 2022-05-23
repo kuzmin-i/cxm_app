@@ -16,6 +16,10 @@ const Wrapper = styled.div`
   z-index: 20;
   padding: 15px;
 
+  &[data-type="infographics"] {
+    width: 400px;
+  }
+
   &&& * {
     font-size: 11px;
   }
@@ -36,6 +40,8 @@ const Wrapper = styled.div`
     border-radius: 10px;
   }
 `;
+
+export const Paper = Wrapper;
 
 const waitingNotification = (placement = "bottomRight") => {
   notification.info({
