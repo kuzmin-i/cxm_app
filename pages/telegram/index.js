@@ -10,6 +10,7 @@ const Screen = styled.div`
 `;
 
 const App = () => {
+  const [tgConnected, setTgConnected] = useState(false);
   const [tools, setTools] = useState(false);
 
   const handleStatus = () => {
@@ -41,11 +42,14 @@ const App = () => {
 
   useEffect(() => {
     handleStatus();
-  }, []);
+  }, [tgConnected]);
 
   return (
     <Screen>
-      <Script src="https://telegram.org/js/telegram-web-app.js"></Script>
+      <Script
+        src="https://telegram.org/js/telegram-web-app.js"
+        onLoad={() => setTgConnected(true)}
+      ></Script>
 
       <span>hello</span>
 
