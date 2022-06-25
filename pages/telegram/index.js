@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
+import Script from "next/script";
 import styled from "styled-components";
 
 const Screen = styled.div`
@@ -45,7 +46,7 @@ const App = () => {
   return (
     <Screen>
       <Head>
-        <script src="https://telegram.org/js/telegram-web-app.js" />
+        <Script src="https://telegram.org/js/telegram-web-app.js"></Script>
       </Head>
 
       <span>hello</span>
