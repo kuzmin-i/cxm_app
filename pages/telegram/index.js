@@ -45,9 +45,7 @@ const App = () => {
 
   return (
     <Screen>
-      <Head>
-        <Script src="https://telegram.org/js/telegram-web-app.js"></Script>
-      </Head>
+      <Script src="https://telegram.org/js/telegram-web-app.js"></Script>
 
       <span>hello</span>
 
