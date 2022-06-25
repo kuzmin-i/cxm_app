@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import styled from "styled-components";
 
 const Screen = styled.div`
@@ -8,6 +9,8 @@ const Screen = styled.div`
 `;
 
 const App = () => {
+  const [tools, setTools] = useState(false);
+
   const handleStatus = () => {
     if (window.Telegram) {
       console.log("window.Telegram.WebApp", window.Telegram.WebApp);
@@ -19,6 +22,9 @@ const App = () => {
         mainbutton.enable();
         mainbutton.show();
         mainbutton.setText("Открыть инструменты");
+
+        mainbutton.onClick(() => setTools(true));
+        mainbutton.offClick(() => setTools(false));
       }
 
       const unsafeData = webapp.initDataUnsafe;
@@ -27,12 +33,10 @@ const App = () => {
       const { id, first_name, last_name, username, photo_url } = user
         ? user
         : {};
-
-      if (first_name) setName(first_name);
-      if (fename) setFename(last_name);
-      if (photo_url) setPhoto(photo_url);
     }
   };
+
+  /* 5392429785:AAHz-W8Z7YioaoqCyVLjLLDTHlW4uMI78Tg */
 
   useEffect(() => {
     handleStatus();
@@ -40,7 +44,13 @@ const App = () => {
 
   return (
     <Screen>
+      <Head>
+        <script src="https://telegram.org/js/telegram-web-app.js" />
+      </Head>
+
       <span>hello</span>
+
+      {tools ? <span>Is open</span> : <span>Is closed</span>}
     </Screen>
   );
 };
