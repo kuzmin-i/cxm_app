@@ -15,8 +15,6 @@ const App = () => {
 
   const handleStatus = () => {
     if (window.Telegram) {
-      console.log("window.Telegram.WebApp", window.Telegram.WebApp);
-
       const webapp = window.Telegram.WebApp;
       const mainbutton = webapp.MainButton;
 
@@ -25,16 +23,15 @@ const App = () => {
         mainbutton.show();
         mainbutton.setText("Открыть инструменты");
 
-        mainbutton.onClick(() => setTools(true));
-        mainbutton.offClick(() => setTools(false));
+        mainbutton.onClick(() => setTools((state) => !state));
       }
 
-      const unsafeData = webapp.initDataUnsafe;
-      const user = unsafeData.user;
+      /*const unsafeData = webapp.initDataUnsafe;
+      const user = unsafeData.user;*/
 
-      const { id, first_name, last_name, username, photo_url } = user
+      /*const { id, first_name, last_name, username, photo_url } = user
         ? user
-        : {};
+        : {};*/
     }
   };
 
@@ -43,6 +40,21 @@ const App = () => {
   useEffect(() => {
     handleStatus();
   }, [tgConnected]);
+
+  useEffect(() => {
+    if (window.Telegram) {
+      const webapp = window.Telegram.WebApp;
+      const mainbutton = webapp.MainButton;
+
+      if (mainbutton) {
+        if (tools) {
+          mainbutton.setText("Скрыть инструменты");
+        } else {
+          mainbutton.setText("Открыть инструменты");
+        }
+      }
+    }
+  }, [tools]);
 
   return (
     <Screen>
