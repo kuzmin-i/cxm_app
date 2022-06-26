@@ -32,10 +32,6 @@ const Camera = (props = {}) => {
       const timer = setTimeout(() => {
         orbitRef.current.reset();
 
-        console.log("orbitRef.current.", orbitRef.current);
-
-        console.log("cameraRef", cameraRef.current);
-
         setPosition([0, 0, 800]);
         setTarget0([0, 0, 0]);
 

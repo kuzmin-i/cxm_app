@@ -60,8 +60,13 @@ const App = () => {
       const webapp = window.Telegram.WebApp;
       const mainbutton = webapp.MainButton;
 
-      webapp.headerColor = "#f2f2f2";
-      webapp.backgroundColor = "#f2f2f2";
+      webapp.setBackgroundColor("#f2f2f2");
+      webapp.setHeaderColor("#f2f2f2");
+
+      console.log("version", webapp.version);
+
+      /*webapp.headerColor = "#f2f2f2";
+      webapp.backgroundColor = "#f2f2f2";*/
 
       if (mainbutton) {
         mainbutton.enable();

@@ -60,8 +60,7 @@ const InfographicsPanel = ({ labels = [], racks = [] }) => {
   const setShowInfographics = useStore(
     ({ setShowInfographics }) => setShowInfographics
   );
-  /*console.log("label", labels);
-  console.log("racks", racks);*/
+
   const infoSection = useStore(({ infoSection }) => infoSection);
   const setInfoSection = useStore(({ setInfoSection }) => setInfoSection);
 
