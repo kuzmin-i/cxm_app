@@ -13,8 +13,6 @@ import ObjectM4Wire from "../models/m4-mesh_wire";
 
 import { TransformControls } from "@react-three/drei";
 
-
-
 const { useBreakpoint } = Grid;
 
 const LayersWrapper = styled.div`
@@ -186,41 +184,6 @@ const Scene = () => {
           </TransformControls>
         )}
 
-        <Analyze
-          {...{
-            tooltip,
-            showTooltip,
-            pointType,
-            setPointType,
-            pointPosition,
-            setPointPosition,
-            /* */
-            pointsGridData,
-            setPointsGridData,
-            labelsData,
-            setLabelsData,
-            pointId,
-            setPointId,
-            /* */
-            axisGridData,
-            setAxisGridData,
-            /* */
-            verticalData,
-            setVerticalData,
-            highData,
-            setHighData,
-            lowData,
-            setLowData,
-            /* */
-            roofSurf_visible,
-            base_visible,
-            points_visible,
-            axis_visible,
-            /* */
-            setUniqueLabelsStatistics,
-            setUniqueRacksStatistics,
-          }}
-        />
         {
           <ObjectM2
             visible={grid_visible}
