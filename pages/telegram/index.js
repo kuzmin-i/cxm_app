@@ -62,8 +62,8 @@ const App = () => {
       const webapp = window.Telegram.WebApp;
       const mainbutton = webapp.MainButton;
 
-      webapp.setBackgroundColor("#f2f2f2");
-      webapp.setHeaderColor("#f2f2f2");
+      webapp.setBackgroundColor("#21C004");
+      /*webapp.setHeaderColor("#f2f2f2");*/
 
       webapp.expand();
 
