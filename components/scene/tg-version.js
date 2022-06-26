@@ -196,7 +196,7 @@ const Scene = () => {
         }
 
         {/* Черновой меш */}
-        {isReady1 && (
+        {/*isReady1 && (
           <ObjectM4Wire
             visible={mesh_visible && simpleModel}
             setLayers={setLayers3}
@@ -205,10 +205,10 @@ const Scene = () => {
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Коммуникации")}
           />
-        )}
+        )*/}
 
         {/* меш */}
-        {isReady3 && (
+        {/*isReady3 && (
           <ObjectM4
             visible={mesh_visible && !simpleModel}
             setLayers={setLayers5}
@@ -219,7 +219,7 @@ const Scene = () => {
               setLoadingObj("Комуникации (Высокое качество)")
             }
           />
-        )}
+          )*/}
       </Canvas>
     </>
   );
