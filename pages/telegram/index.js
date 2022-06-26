@@ -62,8 +62,7 @@ const App = () => {
       const webapp = window.Telegram.WebApp;
       const mainbutton = webapp.MainButton;
 
-      webapp.setBackgroundColor("#21C004");
-      /*webapp.setHeaderColor("#f2f2f2");*/
+      webapp.setBackgroundColor("#f2f2f2");
 
       webapp.expand();
 
@@ -119,14 +118,14 @@ const App = () => {
         onLoad={() => setTgConnected(true)}
       ></Script>
 
-      <h1>{version}</h1>
-
       <Screen>
         <TopBar />
 
         <View />
 
-        <Space3D>{/* <Scene /> */}</Space3D>
+        <Space3D>
+          <Scene />
+        </Space3D>
 
         <ToolsPanel enabled={tools} />
       </Screen>
