@@ -113,6 +113,8 @@ const App = () => {
         onLoad={() => setTgConnected(true)}
       ></Script>
 
+      <h1>{webapp.version}</h1>
+
       <Screen>
         <TopBar />
 
