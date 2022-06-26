@@ -127,11 +127,16 @@ const App = () => {
           <Scene />
         </Space3D>
 
-        <ToolsPanel enabled={tools} />
+        <ToolsPanel enabled={tools} {...{ setTools }} />
       </Screen>
 
       {devMainbutton && (
-        <DevMainbutton onClick={() => setTools((state) => !state)}>
+        <DevMainbutton
+          onClick={(e) => {
+            e.stopPropagation();
+            return setTools((state) => !state);
+          }}
+        >
           Открыть инструменты
         </DevMainbutton>
       )}

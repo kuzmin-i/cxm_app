@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import {
@@ -7,6 +7,9 @@ import {
   AnimatePresence,
   AnimateSharedLayout,
 } from "framer-motion";
+
+import { EyeInvisibleOutlined } from "@ant-design/icons";
+import useClickedOutside from "./outside-hook";
 
 const Bar = styled.div`
   position: absolute;
@@ -122,19 +125,125 @@ const Arrow = styled.div`
   }
 `;
 
+const LayersPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 70vw;
+  height: 200px;
+  background: white;
+  overflow: scroll;
+
+  top: 70px;
+  border-radius: 10px;
+  padding-left: 10px;
+`;
+
+const LayersWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+`;
+
+const Layer = styled.div`
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid #eeeeee;
+  padding-right: 10px;
+
+  &&,
+  && * {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 22px;
+    letter-spacing: -0.4px;
+  }
+`;
+
+const VisIcon = styled(EyeInvisibleOutlined)`
+  &&,
+  && * {
+    font-size: 16px;
+  }
+`;
+
+const LabelLayer = styled.div`
+  display: flex;
+  align-items: center;
+
+  &&::before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 8px;
+    background: lightgrey;
+  }
+
+  && > * + * {
+    margin-left: 10px;
+  }
+`;
+
 const TopBar = () => {
   const [graphicsPanel, showGraphicsPanel] = useState(false);
+
+  const [layersPanel, setLayersPanel] = useState(false);
+
+  const graphicsRef = useRef();
+  const layersRef = useRef();
+
+  useClickedOutside(graphicsRef, showGraphicsPanel);
+  useClickedOutside(layersRef, setLayersPanel);
 
   return (
     <>
       <Bar>
+        {layersPanel && (
+          <LayersPanel ref={layersRef}>
+            <LayersWrapper>
+              {Array(10)
+                .fill(1)
+                .map((_, i) => {
+                  return (
+                    <Layer key={`layer${i}`}>
+                      <LabelLayer>
+                        <div>Слой {i + 1}</div>
+                      </LabelLayer>
+                      <VisIcon />
+                    </Layer>
+                  );
+                })}
+            </LayersWrapper>
+          </LayersPanel>
+        )}
+
         <LeftSide>
-          <LeftSide.Btn section="layers" />
+          <LeftSide.Btn
+            section="layers"
+            onClick={(e) => {
+              e.stopPropagation();
+              return setLayersPanel((state) => !state);
+            }}
+          />
           <LeftSide.Btn section="history" />
         </LeftSide>
 
-        <RightSide data-type={graphicsPanel ? "fullsize" : "default"}>
-          <ChartHeader onClick={() => showGraphicsPanel((state) => !state)}>
+        <RightSide
+          ref={graphicsRef}
+          data-type={graphicsPanel ? "fullsize" : "default"}
+        >
+          <ChartHeader
+            onClick={(e) => {
+              e.stopPropagation();
+              return showGraphicsPanel((state) => !state);
+            }}
+          >
             <Arrow data-rotation={graphicsPanel ? "up" : "down"} />
             <div>Инфографика</div>
           </ChartHeader>

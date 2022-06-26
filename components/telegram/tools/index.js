@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import useClickedOutside from "../topbar/outside-hook";
 
 const Panel = styled.div`
   width: 100%;
@@ -66,9 +67,13 @@ const Icon = styled.div`
   background-size: cover;
 `;
 
-const ToolsPanel = ({ enabled = false }) => {
+const ToolsPanel = ({ enabled = false, setTools = () => {} }) => {
+  const toolsRef = useRef();
+
+  useClickedOutside(toolsRef, setTools);
+
   return (
-    <Panel data-type={enabled ? "opened" : "closed"}>
+    <Panel ref={toolsRef} data-type={enabled ? "opened" : "closed"}>
       <Grid>
         <Item>
           <Icon int={1}></Icon>
