@@ -23,7 +23,7 @@ const Panel = styled.div`
   display: flex;
   height: 100%;
   border-radius: 100px;
-  background: #eeeeee;
+  background: #4b4c4e;
   padding: 2px;
 `;
 
@@ -34,7 +34,7 @@ const Btn = styled.div`
   text-align: center;
   letter-spacing: -0.4px;
 
-  color: #656565;
+  color: #929394;
   border-radius: 100px;
   padding-left: 10px;
   padding-right: 10px;
@@ -46,8 +46,8 @@ const Btn = styled.div`
   ${({ type }) =>
     type === "active"
       ? `
-    background: #262628;
-    color: white;
+    background: #717274;
+    color: #D9D9DA;
 `
       : ``}
 `;
