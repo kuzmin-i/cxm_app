@@ -62,10 +62,12 @@ const App = () => {
       const webapp = window.Telegram.WebApp;
       const mainbutton = webapp.MainButton;
 
-      /*webapp.setBackgroundColor("#f2f2f2");
+      webapp.setBackgroundColor("#f2f2f2");
       webapp.setHeaderColor("#f2f2f2");
 
-      console.log("version", webapp.version);*/
+      webapp.expand();
+
+      /*console.log("version", webapp.version);*/
 
       setVersion(webapp.version);
 
