@@ -1,15 +1,55 @@
-import React, { useEffect, useState } from "react";
-import Head from "next/head";
+import React, { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
 import styled from "styled-components";
+import { useRouter } from "next/router";
+import ToolsPanel from "../../components/telegram/tools";
+import TopBar from "../../components/telegram/topbar";
+import View from "../../components/telegram/view";
+import Scene from "../../components/scene/tg-version";
+
+const CoreLayout = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+`;
 
 const Screen = styled.div`
   width: 100vw;
-  height: 100vh;
-  background: lightgrey;
+  height: 100%;
+  overflow: hidden;
+  background: white;
+
+  position: relative;
+`;
+
+const DevMainbutton = styled.div`
+  width: 100%;
+  height: 62px;
+  background: #40a7e3;
+  font-size: 15px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Space3D = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
 `;
 
 const App = () => {
+  const router = useRouter();
+  const { query = {} } = router ? router : {};
+  const { dev } = query;
+
+  const devMainbutton = useMemo(() => {
+    if (dev) return true;
+  }, [dev]);
+
   const [tgConnected, setTgConnected] = useState(false);
   const [tools, setTools] = useState(false);
 
@@ -57,16 +97,30 @@ const App = () => {
   }, [tools]);
 
   return (
-    <Screen>
+    <CoreLayout>
       <Script
         src="https://telegram.org/js/telegram-web-app.js"
         onLoad={() => setTgConnected(true)}
       ></Script>
 
-      <span>hello</span>
+      <Screen>
+        <TopBar />
 
-      {tools ? <span>Is open</span> : <span>Is closed</span>}
-    </Screen>
+        <View />
+
+        <Space3D>
+          <Scene />
+        </Space3D>
+
+        <ToolsPanel enabled={tools} />
+      </Screen>
+
+      {devMainbutton && (
+        <DevMainbutton onClick={() => setTools((state) => !state)}>
+          Открыть инструменты
+        </DevMainbutton>
+      )}
+    </CoreLayout>
   );
 };
 
