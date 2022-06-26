@@ -55,11 +55,11 @@ const Btn = styled.div`
 `;
 
 const Export = ({ enabled = false, setExportScreen = () => {} }) => {
-  if (!enabled) return <></>;
-
   const ref = useRef();
 
   useClickedOutside(ref, setExportScreen);
+
+  if (!enabled) return <></>;
 
   return (
     <Wrapper>
