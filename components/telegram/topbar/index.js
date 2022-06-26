@@ -126,9 +126,7 @@ const Chart = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-    >
-      <ChartWrapper>sdfs</ChartWrapper>
-    </motion.div>
+    ></motion.div>
   );
 };
 
