@@ -55,6 +55,8 @@ const App = () => {
   const [tgConnected, setTgConnected] = useState(false);
   const [tools, setTools] = useState(false);
 
+  const [version, setVersion] = useState(null);
+
   const handleStatus = () => {
     if (window.Telegram) {
       const webapp = window.Telegram.WebApp;
@@ -64,6 +66,8 @@ const App = () => {
       webapp.setHeaderColor("#f2f2f2");
 
       console.log("version", webapp.version);*/
+
+      setVersion(webapp.version);
 
       /*webapp.headerColor = "#f2f2f2";
       webapp.backgroundColor = "#f2f2f2";*/
@@ -113,7 +117,7 @@ const App = () => {
         onLoad={() => setTgConnected(true)}
       ></Script>
 
-      <h1>{webapp.version}</h1>
+      <h1>{version}</h1>
 
       <Screen>
         <TopBar />
