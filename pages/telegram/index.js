@@ -118,9 +118,7 @@ const App = () => {
 
         <View />
 
-        <Space3D>
-          <Scene />
-        </Space3D>
+        <Space3D>{/* <Scene /> */}</Space3D>
 
         <ToolsPanel enabled={tools} />
       </Screen>
