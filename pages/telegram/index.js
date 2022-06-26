@@ -7,6 +7,8 @@ import TopBar from "../../components/telegram/topbar";
 import View from "../../components/telegram/view";
 import Scene from "../../components/scene/tg-version";
 
+import Export from "../../components/telegram/export";
+
 const CoreLayout = styled.div`
   width: 100vw;
   height: 100vh;
@@ -56,6 +58,8 @@ const App = () => {
   const [tools, setTools] = useState(false);
 
   const [version, setVersion] = useState(null);
+
+  const [isExportScreen, setExportScreen] = useState(false);
 
   const handleStatus = () => {
     if (window.Telegram) {
@@ -121,13 +125,15 @@ const App = () => {
       <Screen>
         <TopBar />
 
+        <Export enabled={isExportScreen} {...{ setExportScreen }} />
+
         <View />
 
         <Space3D>
           <Scene />
         </Space3D>
 
-        <ToolsPanel enabled={tools} {...{ setTools }} />
+        <ToolsPanel enabled={tools} {...{ setTools, setExportScreen }} />
       </Screen>
 
       {devMainbutton && (

@@ -67,7 +67,11 @@ const Icon = styled.div`
   background-size: cover;
 `;
 
-const ToolsPanel = ({ enabled = false, setTools = () => {} }) => {
+const ToolsPanel = ({
+  enabled = false,
+  setTools = () => {},
+  setExportScreen,
+}) => {
   const toolsRef = useRef();
 
   useClickedOutside(toolsRef, setTools);
@@ -90,7 +94,12 @@ const ToolsPanel = ({ enabled = false, setTools = () => {} }) => {
           <Label>Комменты</Label>
         </Item>
 
-        <Item>
+        <Item
+          onClick={(e) => {
+            e.stopPropagation();
+            return setExportScreen(true);
+          }}
+        >
           <Icon int={4}></Icon>
           <Label>Экспорт</Label>
         </Item>

@@ -10,6 +10,7 @@ import {
 
 import { EyeInvisibleOutlined } from "@ant-design/icons";
 import useClickedOutside from "./outside-hook";
+import ChartBar from "./chart";
 
 const Bar = styled.div`
   position: absolute;
@@ -89,13 +90,14 @@ const RightSide = styled.div`
   &[data-type="fullsize"] {
     width: 100%;
     right: -0px;
-    height: 224px;
+    height: 230px;
   }
 `;
 
 const ChartHeader = styled.div`
   width: 100%;
   height: 50px;
+  position: absolute;
 
   display: flex;
   justify-content: center;
@@ -129,7 +131,7 @@ const LayersPanel = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 70vw;
+  width: 200px;
   height: 200px;
   background: white;
   overflow: scroll;
@@ -192,6 +194,19 @@ const LabelLayer = styled.div`
 
 const TopBar = () => {
   const [graphicsPanel, showGraphicsPanel] = useState(false);
+  const [graphicsAreReady, setGraphicsReady] = useState(false);
+
+  useEffect(() => {
+    if (graphicsPanel) {
+      const timer = setTimeout(() => setGraphicsReady(true), 400);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    } else {
+      setGraphicsReady(false);
+    }
+  }, [graphicsPanel]);
 
   const [layersPanel, setLayersPanel] = useState(false);
 
@@ -247,6 +262,8 @@ const TopBar = () => {
             <Arrow data-rotation={graphicsPanel ? "up" : "down"} />
             <div>Инфографика</div>
           </ChartHeader>
+
+          {graphicsAreReady && <ChartBar />}
         </RightSide>
       </Bar>
     </>
