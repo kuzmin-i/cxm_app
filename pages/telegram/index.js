@@ -61,6 +61,18 @@ const App = () => {
 
   const [isExportScreen, setExportScreen] = useState(false);
 
+  useEffect(() => {
+    if (window.Telegram) {
+      const webapp = window.Telegram.WebApp;
+
+      if (isExportScreen) {
+        webapp.setBackgroundColor("#8F8F8F");
+      } else {
+        webapp.setBackgroundColor("#f2f2f2");
+      }
+    }
+  }, [isExportScreen]);
+
   const handleStatus = () => {
     if (window.Telegram) {
       const webapp = window.Telegram.WebApp;
