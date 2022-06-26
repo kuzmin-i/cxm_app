@@ -153,7 +153,7 @@ const ChartBar = () => {
   return (
     <Wrapper>
       <Arrow data-pos="left"/>
-      <Arrow data-pos="right"/>
+      
 
       <Column {...lineConfigAccess} />
       {null && <Pie {...pieConfigAccess} />}
