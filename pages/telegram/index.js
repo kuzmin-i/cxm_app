@@ -39,6 +39,8 @@ const Space3D = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+
+  background: #f2f2f2;
 `;
 
 const App = () => {
@@ -57,6 +59,9 @@ const App = () => {
     if (window.Telegram) {
       const webapp = window.Telegram.WebApp;
       const mainbutton = webapp.MainButton;
+
+      webapp.headerColor = "#f2f2f2";
+      webapp.backgroundColor = "#f2f2f2";
 
       if (mainbutton) {
         mainbutton.enable();

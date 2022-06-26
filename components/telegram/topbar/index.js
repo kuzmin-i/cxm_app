@@ -9,6 +9,9 @@ import {
 } from "framer-motion";
 
 const Bar = styled.div`
+  position: absolute;
+  z-index: 10;
+
   width: 100%;
   padding: 0 10px;
   margin-top: 10px;
@@ -119,17 +122,6 @@ const Arrow = styled.div`
   }
 `;
 
-const Chart = () => {
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    ></motion.div>
-  );
-};
-
 const TopBar = () => {
   const [graphicsPanel, showGraphicsPanel] = useState(false);
 
@@ -144,7 +136,7 @@ const TopBar = () => {
         <RightSide data-type={graphicsPanel ? "fullsize" : "default"}>
           <ChartHeader onClick={() => showGraphicsPanel((state) => !state)}>
             <Arrow data-rotation={graphicsPanel ? "up" : "down"} />
-            <div>INFOGRAPHICS</div>
+            <div>Инфографика</div>
           </ChartHeader>
         </RightSide>
       </Bar>
