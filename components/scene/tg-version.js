@@ -7,16 +7,14 @@ import { Grid } from "antd";
 import Camera from "../scene-core/camera";
 
 import ObjectM2 from "../models/m2-common";
-import ObjectM4 from "../models/m4-mesh";
-import Analyze from "../models/analyze";
-import ObjectM4Wire from "../models/m4-mesh_wire";
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
-import { useThree } from "@react-three/fiber";
 
 import { Box, TransformControls } from "@react-three/drei";
-import { toRenderble } from "./exporter/toRenderble";
 import useStore from "../../store/store";
-import Exporter from "./exporter/exporter";
+import Exporter3dm from "./exporter/3dm-exporter";
+import SceneExportPreparation from "./exporter/scene-export-preparation";
+
+import ObjectM4Wire from "../models/m4-mesh_wire";
 
 const { useBreakpoint } = Grid;
 
@@ -37,7 +35,7 @@ const LayersWrapper = styled.div`
   }
 `;
 
-const Scene = () => {
+const Scene = ({ rhinoConnected }) => {
   const screens = useBreakpoint();
   const [tooltip, showTooltip] = useState(false);
 
@@ -191,14 +189,17 @@ const Scene = () => {
     );
   };
 
+  const [needsData, setNeedsData] = useState(false);
+
   return (
     <>
+      <Exporter3dm {...{ rhinoConnected }} />
       <button
         onClick={() => {
-          setExportDataUpdate(true);
+          setNeedsData(true);
         }}
       >
-        Export OBJ
+        Scene preparation
       </button>
 
       <button onClick={handleTelegramRequest}>Add bot query</button>
@@ -217,7 +218,7 @@ const Scene = () => {
             stencil: false,
           }}
         />
-        <Exporter />
+        <SceneExportPreparation {...{ needsData }} />
 
         <ambientLight />
         <pointLight position={[50, 50, 60]} intensity={8} />
@@ -257,16 +258,16 @@ const Scene = () => {
         </group>
 
         {/* Черновой меш */}
-        {/*isReady1 && (
+        {isReady1 && (
           <ObjectM4Wire
-            visible={mesh_visible && simpleModel}
+            visible={/*mesh_visible && simpleModel*/ true}
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
             setReady={setReady3}
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Коммуникации")}
           />
-        )*/}
+        )}
 
         {/* меш */}
         {/*isReady3 && (

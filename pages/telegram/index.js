@@ -55,6 +55,7 @@ const App = () => {
   }, [dev]);
 
   const [tgConnected, setTgConnected] = useState(false);
+  const [rhinoConnected, setRhinoConnected] = useState(false);
   const [tools, setTools] = useState(false);
 
   const [version, setVersion] = useState(null);
@@ -127,11 +128,33 @@ const App = () => {
     }
   }, [tools]);
 
+  useEffect(() => {
+    if (rhinoConnected) {
+      window.rhino3dm().then((Module) => {
+        console.log("sphere", new Module.Sphere([1, 2, 3], 16));
+
+        const file3dm = new Module.File3dm();
+
+        const embed = new Module.File3dm().getEmbeddedFileAsBase64(file3dm);
+
+        console.log("embed", new Module.File3dm().getEmbeddedFileAsBase64);
+
+        console.log("File3dm", file3dm);
+        console.log("Decode", Module);
+      });
+    }
+  }, [rhinoConnected]);
+
   return (
     <CoreLayout>
       <Script
         src="https://telegram.org/js/telegram-web-app.js"
         onLoad={() => setTgConnected(true)}
+      ></Script>
+
+      <Script
+        src="https://cdn.jsdelivr.net/npm/rhino3dm@0.12.0/rhino3dm.min.js"
+        onLoad={() => setRhinoConnected(true)}
       ></Script>
 
       <Screen>
@@ -142,7 +165,7 @@ const App = () => {
         <View />
 
         <Space3D>
-          <Scene />
+          <Scene {...{ rhinoConnected }} />
         </Space3D>
 
         <ToolsPanel enabled={tools} {...{ setTools, setExportScreen }} />

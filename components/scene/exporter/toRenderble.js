@@ -52,6 +52,8 @@ export const toRenderble = (scene) => {
       return;
     }
 
+    console.log("mesh geometry", mesh.geometry);
+
     let tmpGeometry = new Geometry();
 
     // Convert geometry
