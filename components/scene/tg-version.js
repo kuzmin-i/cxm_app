@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import styled from "styled-components";
 
@@ -10,8 +10,13 @@ import ObjectM2 from "../models/m2-common";
 import ObjectM4 from "../models/m4-mesh";
 import Analyze from "../models/analyze";
 import ObjectM4Wire from "../models/m4-mesh_wire";
+import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
+import { useThree } from "@react-three/fiber";
 
-import { TransformControls } from "@react-three/drei";
+import { Box, TransformControls } from "@react-three/drei";
+import { toRenderble } from "./exporter/toRenderble";
+import useStore from "../../store/store";
+import Exporter from "./exporter/exporter";
 
 const { useBreakpoint } = Grid;
 
@@ -150,9 +155,55 @@ const Scene = () => {
     });
   };
 
+  const meshRef = useRef();
+  const exporter = new OBJExporter();
+
+  function save(blob, filename) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+  }
+
+  function saveString(text, filename) {
+    save(new Blob([text], { type: "text/plain" }), filename);
+  }
+  const ObjFile = useStore(({ ObjFile }) => ObjFile);
+  const sceneData = useStore(({ sceneData }) => sceneData);
+
+  const setExportDataUpdate = useStore(
+    ({ setExportDataUpdate }) => setExportDataUpdate
+  );
+
+  useEffect(() => {
+    console.log("sceneData", sceneData);
+  }, [sceneData]);
+
+  const handleTelegramRequest = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: "React POST Request Example" }),
+    };
+
+    fetch("/api/hello", requestOptions).then((response) =>
+      console.log("respone", response)
+    );
+  };
+
   return (
     <>
-      <Canvas>
+      <button
+        onClick={() => {
+          setExportDataUpdate(true);
+        }}
+      >
+        Export OBJ
+      </button>
+
+      <button onClick={handleTelegramRequest}>Add bot query</button>
+
+      <Canvas ref={meshRef}>
         <Camera
           {...{ setNewPointPosition }}
           invalidateFrameloop={true}
@@ -166,6 +217,7 @@ const Scene = () => {
             stencil: false,
           }}
         />
+        <Exporter />
 
         <ambientLight />
         <pointLight position={[50, 50, 60]} intensity={8} />
@@ -184,7 +236,16 @@ const Scene = () => {
           </TransformControls>
         )}
 
-        {
+        <Box args={[20, 20, 100]} color="red" />
+
+        <Box
+          position={[0, -10, 0]}
+          rotation={[0, 0.5, 0]}
+          args={[20, 20, 60]}
+          color="red"
+        />
+
+        <group>
           <ObjectM2
             visible={grid_visible}
             setLayers={setLayers1}
@@ -193,7 +254,7 @@ const Scene = () => {
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Размерная сетка")}
           />
-        }
+        </group>
 
         {/* Черновой меш */}
         {/*isReady1 && (

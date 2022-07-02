@@ -23,6 +23,7 @@
     "rhino3dm": "^7.14.0",
     "string-to-color": "^2.2.2",
     "styled-components": "^5.3.5",
+    "telegraf": "^4.8.5",
     "three": "^0.139.2",
     "zustand": "^4.0.0-rc.1"
   },
