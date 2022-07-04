@@ -1,4 +1,4 @@
-Polyline
+#Polyline
 
 polyline = new module.Polyline();
 
@@ -9,3 +9,7 @@ polyline.add(ptD[0], ptD[1], ptD[2]);
 polyline.add(ptA[0], ptA[1], ptA[2]);
 
 doc.objects().add(polyline, null);
+
+#
+
+

@@ -46,6 +46,8 @@ const Space3D = styled.div`
 `;
 
 const App = () => {
+  const [needsData, setNeedsData] = useState(false);
+
   const router = useRouter();
   const { query = {} } = router ? router : {};
   const { dev } = query;
@@ -56,7 +58,7 @@ const App = () => {
 
   const [tgConnected, setTgConnected] = useState(false);
   const [rhinoConnected, setRhinoConnected] = useState(false);
-  const [tools, setTools] = useState(false);
+  const [tools, setTools] = useState(true);
 
   const [version, setVersion] = useState(null);
 
@@ -128,23 +130,6 @@ const App = () => {
     }
   }, [tools]);
 
-  useEffect(() => {
-    if (rhinoConnected) {
-      window.rhino3dm().then((Module) => {
-        console.log("sphere", new Module.Sphere([1, 2, 3], 16));
-
-        const file3dm = new Module.File3dm();
-
-        const embed = new Module.File3dm().getEmbeddedFileAsBase64(file3dm);
-
-        console.log("embed", new Module.File3dm().getEmbeddedFileAsBase64);
-
-        console.log("File3dm", file3dm);
-        console.log("Decode", Module);
-      });
-    }
-  }, [rhinoConnected]);
-
   return (
     <CoreLayout>
       <Script
@@ -160,15 +145,21 @@ const App = () => {
       <Screen>
         <TopBar />
 
-        <Export enabled={isExportScreen} {...{ setExportScreen }} />
+        <Export
+          enabled={isExportScreen}
+          {...{ setExportScreen, setNeedsData }}
+        />
 
         <View />
 
         <Space3D>
-          <Scene {...{ rhinoConnected }} />
+          <Scene {...{ rhinoConnected, needsData, setNeedsData }} />
         </Space3D>
 
-        <ToolsPanel enabled={tools} {...{ setTools, setExportScreen }} />
+        <ToolsPanel
+          enabled={tools}
+          {...{ setTools, setExportScreen, setNeedsData }}
+        />
       </Screen>
 
       {devMainbutton && (

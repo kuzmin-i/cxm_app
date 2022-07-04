@@ -35,7 +35,7 @@ const LayersWrapper = styled.div`
   }
 `;
 
-const Scene = ({ rhinoConnected }) => {
+const Scene = ({ rhinoConnected, needsData, setNeedsData }) => {
   const screens = useBreakpoint();
   const [tooltip, showTooltip] = useState(false);
 
@@ -154,28 +154,6 @@ const Scene = ({ rhinoConnected }) => {
   };
 
   const meshRef = useRef();
-  const exporter = new OBJExporter();
-
-  function save(blob, filename) {
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-  }
-
-  function saveString(text, filename) {
-    save(new Blob([text], { type: "text/plain" }), filename);
-  }
-  const ObjFile = useStore(({ ObjFile }) => ObjFile);
-  const sceneData = useStore(({ sceneData }) => sceneData);
-
-  const setExportDataUpdate = useStore(
-    ({ setExportDataUpdate }) => setExportDataUpdate
-  );
-
-  useEffect(() => {
-    console.log("sceneData", sceneData);
-  }, [sceneData]);
 
   const handleTelegramRequest = () => {
     const requestOptions = {
@@ -189,21 +167,8 @@ const Scene = ({ rhinoConnected }) => {
     );
   };
 
-  const [needsData, setNeedsData] = useState(false);
-
   return (
     <>
-      <Exporter3dm {...{ rhinoConnected }} />
-      <button
-        onClick={() => {
-          setNeedsData(true);
-        }}
-      >
-        Scene preparation
-      </button>
-
-      <button onClick={handleTelegramRequest}>Add bot query</button>
-
       <Canvas ref={meshRef}>
         <Camera
           {...{ setNewPointPosition }}
@@ -218,7 +183,7 @@ const Scene = ({ rhinoConnected }) => {
             stencil: false,
           }}
         />
-        <SceneExportPreparation {...{ needsData }} />
+        <SceneExportPreparation {...{ needsData, setNeedsData }} />
 
         <ambientLight />
         <pointLight position={[50, 50, 60]} intensity={8} />
@@ -237,16 +202,23 @@ const Scene = ({ rhinoConnected }) => {
           </TransformControls>
         )}
 
-        <Box args={[20, 20, 100]} color="red" />
+        <Box args={[20, 20, 100]} color="red">
+          <meshStandardMaterial
+            color={"red"}
+            opacity={0.7}
+            transparent={true}
+          />
+        </Box>
 
-        <Box
-          position={[0, -10, 0]}
-          rotation={[0, 0.5, 0]}
-          args={[20, 20, 60]}
-          color="red"
-        />
+        <Box position={[0, -10, 0]} rotation={[0, 0.5, 0]} args={[20, 20, 60]}>
+          <meshStandardMaterial
+            color={"red"}
+            opacity={0.7}
+            transparent={true}
+          />
+        </Box>
 
-        <group>
+        <group rotation={[0, 0, 0]} position={[0, 20, 0]}>
           <ObjectM2
             visible={grid_visible}
             setLayers={setLayers1}

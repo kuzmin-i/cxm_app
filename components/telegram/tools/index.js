@@ -4,18 +4,22 @@ import useClickedOutside from "../topbar/outside-hook";
 
 const Panel = styled.div`
   width: 100%;
+  max-width: 500px;
   height: max-content;
   background: white;
-  border-radius: 10px 10px 0 0;
+  /* border-radius: 10px 10px 0 0; */
+  border-radius: 10px;
   z-index: 20;
+  background: #262628;
 
   &&,
   && * {
-    color: black;
+    color: white;
   }
 
   position: absolute;
-  bottom: 0;
+  top: 10px;
+  left: 50%;
   transition: 0.3s ease-in-out;
   border: 1px solid rgba(0, 0, 0, 0.1);
 
@@ -25,11 +29,11 @@ const Panel = styled.div`
   padding: 10px;
 
   &[data-type="opened"] {
-    transform: translateY(0%);
+    transform: translateY(0%) translateX(-50%);
   }
 
   &[data-type="closed"] {
-    transform: translateY(100%);
+    transform: translateX(-50%);
   }
 `;
 
@@ -47,6 +51,8 @@ const Item = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
+
+  cursor: pointer;
 `;
 
 const Label = styled.div`

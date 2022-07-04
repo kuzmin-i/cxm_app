@@ -54,7 +54,11 @@ const Btn = styled.div`
   line-height: 24px;
 `;
 
-const Export = ({ enabled = false, setExportScreen = () => {} }) => {
+const Export = ({
+  enabled = false,
+  setExportScreen = () => {},
+  setNeedsData = () => {},
+}) => {
   const ref = useRef();
 
   useClickedOutside(ref, setExportScreen);
@@ -66,7 +70,13 @@ const Export = ({ enabled = false, setExportScreen = () => {} }) => {
       <Panel>
         <Paper ref={ref}>
           <Btn>Экспорт в DWG</Btn>
-          <Btn>Экспорт в 3DM</Btn>
+          <Btn
+            onClick={() => {
+              setNeedsData(true);
+            }}
+          >
+            Экспорт в 3DM
+          </Btn>
         </Paper>
         <Paper>
           <Btn>Отмена</Btn>

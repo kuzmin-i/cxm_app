@@ -37,14 +37,13 @@ const Bar = styled.div`
 const LeftSide = styled.div`
   width: max-content;
   height: 50px;
+  background: #262628;
+  border-radius: 10px;
+  overflow: hidden;
 
   position: absolute;
   left: 10px;
   top: 10px;
-
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: white;
 
   display: flex;
 `;
@@ -52,6 +51,8 @@ const LeftSide = styled.div`
 LeftSide.Btn = styled.div`
   width: 50px;
   height: 50px;
+  background: #262628;
+  cursor: pointer;
 
   display: flex;
   justify-content: center;
@@ -65,10 +66,10 @@ LeftSide.Btn = styled.div`
     ${({ section }) =>
       section === "layers"
         ? `
-      background: url('/icons/layers-ic.svg');
+      background: url('/icons/layers-ic-1.svg');
       `
         : `
-      background: url('/icons/history-ic.svg');
+      background: url('/icons/history-ic-1.svg');
       `}
     background-size: cover;
   }
@@ -98,6 +99,7 @@ const ChartHeader = styled.div`
   width: 100%;
   height: 50px;
   position: absolute;
+  cursor: pointer;
 
   display: flex;
   justify-content: center;

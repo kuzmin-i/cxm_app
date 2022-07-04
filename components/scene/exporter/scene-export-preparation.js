@@ -86,16 +86,19 @@ const handleSorting = (scene) => {
 };
 
 /* Сохранить файл */
-const saveByteArray = (filename, byte) => {
+const saveByteArray = (filename, byte, setNeedsData) => {
   let blob = new Blob([byte], { type: "application/octect-stream" });
 
   let link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
+
   link.download = filename;
   link.click();
+
+  setNeedsData(false);
 };
 
-const SceneExportPreparation = ({ needsData }) => {
+const SceneExportPreparation = ({ needsData, setNeedsData }) => {
   const { scene } = useThree();
 
   useEffect(() => {
@@ -112,6 +115,11 @@ const SceneExportPreparation = ({ needsData }) => {
           copyScene.map((item) => {
             const { type } = item;
 
+            const layer = new rh.Layer();
+            layer.name = "Something" + Math.random();
+
+            doc.layers().add(layer);
+
             if (type === "polyline") {
               /* Шаг 2.1: Если элемент - полилиния */
               const { points = [] } = item;
@@ -119,7 +127,7 @@ const SceneExportPreparation = ({ needsData }) => {
               const polyline = new rh.Polyline();
 
               points.map((point) => {
-                polyline.add(point[0], point[1], point[2]);
+                polyline.add(point[0], point[2], point[1]);
               });
 
               doc.objects().add(polyline.toNurbsCurve(), null);
@@ -142,7 +150,7 @@ const SceneExportPreparation = ({ needsData }) => {
 
         /* Делаем файл битным */
         let buffer = doc.toByteArray(options);
-        saveByteArray("online-scene.3dm", buffer);
+        saveByteArray("online-scene.3dm", buffer, setNeedsData);
 
         /* Стираем 3dm класс */
         doc.delete();
