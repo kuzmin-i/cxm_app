@@ -135,7 +135,7 @@ const LayersPanel = styled.div`
   position: absolute;
   width: 200px;
   height: 200px;
-  background: white;
+  background: #262628;
   overflow: scroll;
 
   top: 70px;
@@ -161,7 +161,7 @@ const Layer = styled.div`
     opacity: 0.6;
   }
 
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #646468;
   padding-right: 10px;
 
   &&,
@@ -170,6 +170,7 @@ const Layer = styled.div`
     font-size: 13px;
     line-height: 22px;
     letter-spacing: -0.4px;
+    color: white;
   }
 `;
 
