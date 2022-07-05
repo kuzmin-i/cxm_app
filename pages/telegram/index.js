@@ -50,11 +50,15 @@ const App = () => {
 
   const router = useRouter();
   const { query = {} } = router ? router : {};
-  const { dev } = query;
+  const { dev, full } = query;
 
   const devMainbutton = useMemo(() => {
     if (dev) return true;
   }, [dev]);
+
+  const fullsize = useMemo(() => {
+    if (full) return true;
+  });
 
   const [tgConnected, setTgConnected] = useState(false);
   const [rhinoConnected, setRhinoConnected] = useState(false);
@@ -143,14 +147,14 @@ const App = () => {
       ></Script>
 
       <Screen>
-        <TopBar />
+        <TopBar {...{ fullsize }} />
 
         <Export
           enabled={isExportScreen}
           {...{ setExportScreen, setNeedsData }}
         />
 
-        <View />
+        <View {...{ fullsize }} />
 
         <Space3D>
           <Scene {...{ rhinoConnected, needsData, setNeedsData }} />
@@ -158,7 +162,7 @@ const App = () => {
 
         <ToolsPanel
           enabled={tools}
-          {...{ setTools, setExportScreen, setNeedsData }}
+          {...{ setTools, setExportScreen, setNeedsData, fullsize }}
         />
       </Screen>
 

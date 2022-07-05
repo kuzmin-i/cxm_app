@@ -12,6 +12,12 @@ const Panel = styled.div`
   z-index: 20;
   background: #262628;
 
+  &&&&[data-mode="mini"] {
+    top: auto;
+    bottom: 0px;
+    border-radius: 10px 10px 0 0;
+  }
+
   &&,
   && * {
     color: white;
@@ -77,13 +83,18 @@ const ToolsPanel = ({
   enabled = false,
   setTools = () => {},
   setExportScreen,
+  fullsize,
 }) => {
   const toolsRef = useRef();
 
   useClickedOutside(toolsRef, setTools);
 
   return (
-    <Panel ref={toolsRef} data-type={enabled ? "opened" : "closed"}>
+    <Panel
+      data-mode={fullsize ? "full" : "mini"}
+      ref={toolsRef}
+      data-type={enabled ? "opened" : "closed"}
+    >
       <Grid>
         <Item>
           <Icon int={1}></Icon>

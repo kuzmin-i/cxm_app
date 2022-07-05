@@ -194,7 +194,7 @@ const LabelLayer = styled.div`
   }
 `;
 
-const TopBar = () => {
+const TopBar = ({ fullsize }) => {
   const [graphicsPanel, showGraphicsPanel] = useState(false);
   const [graphicsAreReady, setGraphicsReady] = useState(false);
 

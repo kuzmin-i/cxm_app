@@ -7,6 +7,10 @@ const Wrapper = styled.div`
   height: 26px;
   z-index: 10;
 
+  &&&[data-mode="mini"] {
+    bottom: 108px;
+  }
+
   width: 100%;
   display: flex;
   justify-content: center;
@@ -52,9 +56,9 @@ const Btn = styled.div`
       : ``}
 `;
 
-const View = () => {
+const View = ({ fullsize }) => {
   return (
-    <Wrapper>
+    <Wrapper data-mode={fullsize ? "full" : "mini"}>
       <Panel>
         <Btn type="active">Перспектива</Btn>
         <Btn>Орто</Btn>
