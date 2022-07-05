@@ -99,9 +99,12 @@ const App = () => {
       if (mainbutton) {
         mainbutton.enable();
         mainbutton.show();
-        mainbutton.setText("Открыть инструменты");
+        mainbutton.setText("Открыть в новом окне");
 
-        mainbutton.onClick(() => setTools((state) => !state));
+        mainbutton.onClick(() => {
+          window.open("https://cxmapp.vercel.app/telegram", "_blank");
+          /*setTools((state) => !state)*/
+        });
       }
 
       /*const unsafeData = webapp.initDataUnsafe;
@@ -126,9 +129,9 @@ const App = () => {
 
       if (mainbutton) {
         if (tools) {
-          mainbutton.setText("Скрыть инструменты");
+          mainbutton.setText("Открыть в новом окне");
         } else {
-          mainbutton.setText("Открыть инструменты");
+          mainbutton.setText("Открыть в новом окне");
         }
       }
     }
