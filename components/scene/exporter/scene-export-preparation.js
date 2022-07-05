@@ -118,6 +118,8 @@ const SceneExportPreparation = ({ needsData, setNeedsData }) => {
             const layer = new rh.Layer();
             layer.name = "Something" + Math.random();
 
+            console.log("layer", layer);
+
             doc.layers().add(layer);
 
             if (type === "polyline") {
@@ -125,6 +127,8 @@ const SceneExportPreparation = ({ needsData, setNeedsData }) => {
               const { points = [] } = item;
 
               const polyline = new rh.Polyline();
+
+              console.log("polyline", polyline);
 
               points.map((point) => {
                 polyline.add(point[0], point[2], point[1]);
@@ -138,6 +142,8 @@ const SceneExportPreparation = ({ needsData, setNeedsData }) => {
               const mesh = rh.Mesh.createFromThreejsJSON({
                 data: geometry,
               });
+
+              console.log("mesh", mesh);
 
               doc.objects().add(mesh, null);
             }

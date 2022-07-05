@@ -75,6 +75,7 @@ const Camera = (props = {}) => {
         enableZoom
         enablePan
         rev
+        panSpeed={0.1}
         ref={orbitRef}
         target={target0}
         makeDefault

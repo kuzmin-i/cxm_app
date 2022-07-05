@@ -157,6 +157,10 @@ const Layer = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  &&&[data-mode="hidden"] * {
+    opacity: 0.6;
+  }
+
   border-bottom: 1px solid #eeeeee;
   padding-right: 10px;
 
@@ -194,7 +198,7 @@ const LabelLayer = styled.div`
   }
 `;
 
-const TopBar = ({ fullsize }) => {
+const TopBar = ({ fullsize, layers, setLayers }) => {
   const [graphicsPanel, showGraphicsPanel] = useState(false);
   const [graphicsAreReady, setGraphicsReady] = useState(false);
 
@@ -224,18 +228,33 @@ const TopBar = ({ fullsize }) => {
         {layersPanel && (
           <LayersPanel ref={layersRef}>
             <LayersWrapper>
-              {Array(10)
-                .fill(1)
-                .map((_, i) => {
-                  return (
-                    <Layer key={`layer${i}`}>
-                      <LabelLayer>
-                        <div>Слой {i + 1}</div>
-                      </LabelLayer>
-                      <VisIcon />
-                    </Layer>
-                  );
-                })}
+              {layers.map((item = {}, i) => {
+                const { name, visible } = item;
+
+                return (
+                  <Layer
+                    key={`layer${i}`}
+                    data-mode={visible ? "default" : "hidden"}
+                  >
+                    <LabelLayer>
+                      <div>{name}</div>
+                    </LabelLayer>
+                    <VisIcon
+                      onClick={() =>
+                        setLayers((state) =>
+                          state.map((item, _i) => {
+                            if (i !== _i) return item;
+                            const { visible: _visible, ...otherItemProps } =
+                              item;
+
+                            return { visible: !_visible, ...otherItemProps };
+                          })
+                        )
+                      }
+                    />
+                  </Layer>
+                );
+              })}
             </LayersWrapper>
           </LayersPanel>
         )}

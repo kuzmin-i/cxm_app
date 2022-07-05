@@ -35,7 +35,7 @@ const LayersWrapper = styled.div`
   }
 `;
 
-const Scene = ({ rhinoConnected, needsData, setNeedsData }) => {
+const Scene = ({ rhinoConnected, needsData, setNeedsData, layers = [] }) => {
   const screens = useBreakpoint();
   const [tooltip, showTooltip] = useState(false);
 
@@ -202,35 +202,45 @@ const Scene = ({ rhinoConnected, needsData, setNeedsData }) => {
           </TransformControls>
         )}
 
-        <Box args={[20, 20, 100]} color="red">
-          <meshStandardMaterial
-            color={"red"}
-            opacity={0.7}
-            transparent={true}
-          />
-        </Box>
+        {layers[0].visible && (
+          <Box args={[20, 20, 100]} color="red">
+            <meshStandardMaterial
+              color={"red"}
+              opacity={0.7}
+              transparent={true}
+            />
+          </Box>
+        )}
 
-        <Box position={[0, -10, 0]} rotation={[0, 0.5, 0]} args={[20, 20, 60]}>
-          <meshStandardMaterial
-            color={"red"}
-            opacity={0.7}
-            transparent={true}
-          />
-        </Box>
+        {layers[1].visible && (
+          <Box
+            position={[0, -20, 0]}
+            rotation={[0, 0.5, 0]}
+            args={[20, 20, 60]}
+          >
+            <meshStandardMaterial
+              color={"red"}
+              opacity={0.7}
+              transparent={true}
+            />
+          </Box>
+        )}
 
-        <group rotation={[0, 0, 0]} position={[0, 0, 0]}>
-          <ObjectM2
-            visible={grid_visible}
-            setLayers={setLayers1}
-            hiddenLayers={hiddenLayers1}
-            setReady={setReady1}
-            setPercentsLoaded={setPercentsLoaded}
-            setLoadingObj={() => setLoadingObj("Размерная сетка")}
-          />
-        </group>
+        {layers[3].visible && (
+          <group rotation={[0, 0, 0]} position={[0, 0, 0]}>
+            <ObjectM2
+              visible={grid_visible}
+              setLayers={setLayers1}
+              hiddenLayers={hiddenLayers1}
+              setReady={setReady1}
+              setPercentsLoaded={setPercentsLoaded}
+              setLoadingObj={() => setLoadingObj("Размерная сетка")}
+            />
+          </group>
+        )}
 
         {/* Черновой меш */}
-        {isReady1 && (
+        {layers[2].visible && isReady1 && (
           <ObjectM4Wire
             visible={/*mesh_visible && simpleModel*/ true}
             setLayers={setLayers3}

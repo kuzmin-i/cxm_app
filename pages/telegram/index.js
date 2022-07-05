@@ -137,6 +137,19 @@ const App = () => {
     }
   }, [tools]);
 
+  const [layers, setLayers] = useState([
+    { name: "Куб 1", visible: true },
+    { name: "Куб 2", visible: true },
+    {
+      name: "Коммуникации.Мэш",
+      visible: true,
+    },
+    {
+      name: "Сетка",
+      visible: true,
+    },
+  ]);
+
   return (
     <CoreLayout>
       <Script
@@ -150,7 +163,7 @@ const App = () => {
       ></Script>
 
       <Screen>
-        <TopBar {...{ fullsize }} />
+        <TopBar {...{ fullsize, layers, setLayers }} />
 
         <Export
           enabled={isExportScreen}
@@ -160,7 +173,7 @@ const App = () => {
         <View {...{ fullsize }} />
 
         <Space3D>
-          <Scene {...{ rhinoConnected, needsData, setNeedsData }} />
+          <Scene {...{ rhinoConnected, needsData, setNeedsData, layers }} />
         </Space3D>
 
         <ToolsPanel

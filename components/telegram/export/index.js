@@ -15,6 +15,9 @@ const Wrapper = styled.div`
 const Panel = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 500px;
+  left: 50%;
+  transform: translateX(-50%);
 
   && > * + * {
     margin-top: 9px;
@@ -42,6 +45,7 @@ const Paper = styled.div`
 const Btn = styled.div`
   width: 100%;
   height: 57px;
+  cursor: pointer;
 
   display: flex;
   justify-content: center;
