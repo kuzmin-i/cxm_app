@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   z-index: 10;
 
   &&&[data-mode="mini"] {
-    bottom: 108px;
+    bottom: 90px;
   }
 
   width: 100%;

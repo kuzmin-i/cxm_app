@@ -5,7 +5,7 @@ import useClickedOutside from "../topbar/outside-hook";
 const Panel = styled.div`
   width: 100%;
   max-width: 500px;
-  height: max-content;
+  height: auto;
   background: white;
   /* border-radius: 10px 10px 0 0; */
   border-radius: 10px;

@@ -59,7 +59,7 @@ const Camera = (props = {}) => {
       <PerspectiveCamera
         ref={cameraRef}
         makeDefault={view === "perspective" || true}
-        fov={45}
+        fov={100}
         {...{ zoom, position, rotation: [0, 0, 0] }}
       />
 
@@ -74,6 +74,7 @@ const Camera = (props = {}) => {
         enableRotate={view === "ortho" || view === "perspective"}
         enableZoom
         enablePan
+        rev
         ref={orbitRef}
         target={target0}
         makeDefault

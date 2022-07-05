@@ -218,7 +218,7 @@ const Scene = ({ rhinoConnected, needsData, setNeedsData }) => {
           />
         </Box>
 
-        <group rotation={[0, 0, 0]} position={[0, 20, 0]}>
+        <group rotation={[0, 0, 0]} position={[0, 0, 0]}>
           <ObjectM2
             visible={grid_visible}
             setLayers={setLayers1}
