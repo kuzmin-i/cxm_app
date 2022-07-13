@@ -15,15 +15,21 @@ const Loader = ({ setPercentsLoaded, setLoadingObj }) => {
   return <group />;
 };
 
-const Rhino3dmLogo = ({ url, setLayers, setObjects, setReady, ...props }) => {
-  const model = useLoader(Rhino3dmLoader, url, (loader) =>
-    loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/")
-  );
+const Model = ({ url, setLayers, setObjects, setReady, ...props }) => {
+  const [model, setModel] = useState(null);
+
+  useEffect(() => {
+    const model = useLoader(Rhino3dmLoader, url, (loader) =>
+      loader.setLibraryPath(
+        "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/"
+      )
+    );
+
+    setModel(model);
+  }, []);
 
   useEffect(() => {
     if (model) {
-      setReady(true);
-
       const { children = [], userData = {} } = model ? model : {};
       const { layers = [] } = userData;
 
@@ -75,7 +81,7 @@ const ObjectM2 = ({
         scale={[0.001, 0.001, 0.001]}
         rotation={[(-90 / 180) * Math.PI, 0, 0]}
       >
-        <Rhino3dmLogo
+        <Model
           {...{ setObjects, setLayers, setReady }}
           url="/models/big_common.3dm"
         />

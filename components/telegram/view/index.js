@@ -29,6 +29,8 @@ const Panel = styled.div`
   border-radius: 100px;
   background: #4b4c4e;
   padding: 2px;
+
+  cursor: pointer;
 `;
 
 const Btn = styled.div`
@@ -43,6 +45,8 @@ const Btn = styled.div`
   padding-left: 10px;
   padding-right: 10px;
 
+  cursor: pointer;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,13 +60,28 @@ const Btn = styled.div`
       : ``}
 `;
 
-const View = ({ fullsize }) => {
+const View = ({ fullsize, viewType, setViewType }) => {
   return (
     <Wrapper data-mode={fullsize ? "full" : "mini"}>
       <Panel>
-        <Btn type="active">Перспектива</Btn>
-        <Btn>Орто</Btn>
-        <Btn>План</Btn>
+        <Btn
+          type={viewType === "perspective" ? "active" : null}
+          onClick={() => setViewType("perspective")}
+        >
+          Перспектива
+        </Btn>
+        <Btn
+          type={viewType === "ortho" ? "active" : null}
+          onClick={() => setViewType("ortho")}
+        >
+          Орто
+        </Btn>
+        <Btn
+          type={viewType === "top" ? "active" : null}
+          onClick={() => setViewType("top")}
+        >
+          План
+        </Btn>
       </Panel>
     </Wrapper>
   );

@@ -68,6 +68,8 @@ const App = () => {
 
   const [isExportScreen, setExportScreen] = useState(false);
 
+  const [viewType, setViewType] = useState("ortho");
+
   useEffect(() => {
     if (window.Telegram) {
       const webapp = window.Telegram.WebApp;
@@ -170,10 +172,19 @@ const App = () => {
           {...{ setExportScreen, setNeedsData }}
         />
 
-        <View {...{ fullsize }} />
+        <View {...{ fullsize, viewType, setViewType }} />
 
         <Space3D>
-          <Scene {...{ rhinoConnected, needsData, setNeedsData, layers }} />
+          <Scene
+            {...{
+              rhinoConnected,
+              needsData,
+              setNeedsData,
+              layers,
+              viewType,
+              setViewType,
+            }}
+          />
         </Space3D>
 
         <ToolsPanel

@@ -4,79 +4,70 @@ import {
   OrbitControls,
   PerspectiveCamera,
 } from "@react-three/drei";
-import * as THREE from "three";
+import { useThree } from "@react-three/fiber";
 
 /* Настраиваем камеру */
 const Camera = (props = {}) => {
-  const { view, setNewPointPosition = () => {}, ...otherProps } = props;
+  const { viewType } = props;
 
-  const viewf = "perspective";
+  /* Шаг 1: refs и useThree */
 
-  const [ready, setReady] = useState(false);
+  const perspectiveCam = useRef();
+  const orthoCam = useRef();
+  const { get, set } = useThree(({ get, set }) => ({ get, set }));
 
-  const [zoom] = useState(10);
+  useEffect(() => {
+    const changeView = () => {
+      setTarget0([0, 0, 0]);
+
+      if (viewType === "perspective") {
+        set({ camera: perspectiveCam.current });
+
+        setZoom(20);
+        setPosition([-500, 900, 800]);
+      } else {
+        set({ camera: orthoCam.current });
+
+        if (viewType === "top") {
+          setZoom(6);
+          setPosition([0, 1900, 0]);
+        } else {
+          setZoom(6);
+          setPosition([-500, 900, 800]);
+        }
+      }
+    };
+
+    changeView();
+  }, [get, set, viewType]);
+
+  const [zoom, setZoom] = useState(0);
   const [position, setPosition] = useState([0, 0, 50]);
   const [target0, setTarget0] = useState([0, 0, 0]);
-
-  const orbitRef = useRef();
-
-  const cameraRef = useRef();
-  const camera1Ref = useRef();
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (orbitRef && orbitRef.current && view && ready) {
-      const timer = setTimeout(() => {
-        orbitRef.current.reset();
-
-        setPosition([0, 0, 800]);
-        setTarget0([0, 0, 0]);
-
-        if (view === "ortho" || view === "perspective") {
-          orbitRef.current.setPolarAngle((32 * Math.PI) / 180);
-          orbitRef.current.setAzimuthalAngle((-45 * Math.PI) / 180);
-        }
-
-        if (view === "top") {
-          orbitRef.current.setPolarAngle((-90 * Math.PI) / 180);
-          orbitRef.current.setAzimuthalAngle((0 * Math.PI) / 180);
-        }
-
-        orbitRef.current.update();
-      }, 0);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [orbitRef, cameraRef, camera1Ref, ready, view]);
 
   return (
     <>
       <PerspectiveCamera
-        ref={cameraRef}
-        makeDefault={view === "perspective" || true}
+        name="perspective"
+        ref={perspectiveCam}
         fov={100}
         {...{ zoom, position, rotation: [0, 0, 0] }}
       />
 
-      {/*<OrthographicCamera
-        ref={cameraRef}
-        makeDefault={view === "ortho" || view === "top"}
+      <OrthographicCamera
+        name="ortho"
+        ref={orthoCam}
         {...{ zoom, position, rotation: [0, 0, 0] }}
-  />*/}
+      />
+
       <OrbitControls
         minPolarAngle={0}
         maxPolarAngle={Math.PI * 0.7}
-        enableRotate={view === "ortho" || view === "perspective"}
+        enableRotate={viewType === "top" ? false : true}
         enableZoom
         enablePan
         rev
         panSpeed={0.1}
-        ref={orbitRef}
         target={target0}
         makeDefault
       />
@@ -85,24 +76,3 @@ const Camera = (props = {}) => {
 };
 
 export default Camera;
-
-/* 
-
-<>
-          <perspectiveCamera
-            ref={camera1Ref}
-            makeDefault
-            {...{ zoom, position, rotation: [0, 0, 0] }}
-          />
-          <OrbitControls
-            minPolarAngle={0}
-            maxPolarAngle={Math.PI * 0.7}
-            enableRotate
-            enableZoom
-            enablePan
-            ref={orbitRefPerspective}
-            target={target0}
-            makeDefault
-          />
-        </>
-        */

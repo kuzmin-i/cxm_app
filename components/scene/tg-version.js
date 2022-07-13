@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import styled from "styled-components";
 
 import { Grid } from "antd";
@@ -15,6 +15,7 @@ import Exporter3dm from "./exporter/3dm-exporter";
 import SceneExportPreparation from "./exporter/scene-export-preparation";
 
 import ObjectM4Wire from "../models/m4-mesh_wire";
+import MeshM2 from "../models/m2-common-json";
 
 const { useBreakpoint } = Grid;
 
@@ -35,7 +36,7 @@ const LayersWrapper = styled.div`
   }
 `;
 
-const Scene = ({ rhinoConnected, needsData, setNeedsData, layers = [] }) => {
+const Scene = ({ needsData, setNeedsData, layers = [], viewType }) => {
   const screens = useBreakpoint();
   const [tooltip, showTooltip] = useState(false);
 
@@ -170,19 +171,7 @@ const Scene = ({ rhinoConnected, needsData, setNeedsData, layers = [] }) => {
   return (
     <>
       <Canvas ref={meshRef}>
-        <Camera
-          {...{ setNewPointPosition }}
-          invalidateFrameloop={true}
-          dpr={[1, 2]}
-          raycaster={{ enabled: true }}
-          colorManagement={false}
-          view={view}
-          gl={{
-            powerPreference: "high-performance",
-            antialias: true,
-            stencil: false,
-          }}
-        />
+        <Camera {...{ viewType }} />
         <SceneExportPreparation {...{ needsData, setNeedsData }} />
 
         <ambientLight />
@@ -226,7 +215,7 @@ const Scene = ({ rhinoConnected, needsData, setNeedsData, layers = [] }) => {
           </Box>
         )}
 
-        {layers[3].visible && (
+        {/*layers[3].visible && (
           <group rotation={[0, 0, 0]} position={[0, 0, 0]}>
             <ObjectM2
               visible={grid_visible}
@@ -237,19 +226,21 @@ const Scene = ({ rhinoConnected, needsData, setNeedsData, layers = [] }) => {
               setLoadingObj={() => setLoadingObj("Размерная сетка")}
             />
           </group>
-        )}
+        )*/}
+
+        {layers[2].visible && <MeshM2 />}
 
         {/* Черновой меш */}
-        {layers[2].visible && isReady1 && (
+        {/*layers[2].visible && (
           <ObjectM4Wire
-            visible={/*mesh_visible && simpleModel*/ true}
+            visible={true}
             setLayers={setLayers3}
             hiddenLayers={hiddenLayers3}
             setReady={setReady3}
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Коммуникации")}
           />
-        )}
+        )*/}
 
         {/* меш */}
         {/*isReady3 && (
