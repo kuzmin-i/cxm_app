@@ -6,7 +6,7 @@ import { Grid } from "antd";
 
 import Camera from "../scene-core/camera";
 
-import ObjectM2 from "../models/m2-common";
+//import ObjectM2 from "../models/m2-common";
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
 
 import { Box, TransformControls, Plane } from "@react-three/drei";
@@ -14,8 +14,8 @@ import useStore from "../../store/store";
 import Exporter3dm from "./exporter/3dm-exporter";
 import SceneExportPreparation from "./exporter/scene-export-preparation";
 
-import ObjectM4Wire from "../models/m4-mesh_wire";
-import MeshM2 from "../models/m2-common-json";
+//import ObjectM4Wire from "../models/m4-mesh_wire";
+//import MeshM2 from "../models/m2-common-json";
 import IFCModel from "../models/ifc-model";
 import Clip from "../models/clip";
 import useClippingStore from "../../store/clipping-planes";
@@ -63,9 +63,9 @@ const Scene = ({ viewType }) => {
   /* ***** */
 
   /* Approach 1 */
-  /*const [JSONlinks, setJSONllinks] = useState();
+  const [JSONlinks, setJSONllinks] = useState();
 
-  if (way === "l") {
+  /*if (way === "l") {
     const fetcher = (url) => fetch(url).then((res) => res.json());
     const { data: JSONlinks_data = [] } = useSWR("/api/readfiles", fetcher);
 

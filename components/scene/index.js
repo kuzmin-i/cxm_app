@@ -4,19 +4,19 @@ import styled from "styled-components";
 
 import { Button, Grid } from "antd";
 
-import ObjectM1 from "../models/m1";
+//import ObjectM1 from "../models/m1";
 import Camera from "../scene-core/camera";
 
 import Layers from "../ui/layers";
 import BottomNav from "../ui/bottom-nav";
-import ObjectM2 from "../models/m2-common";
-import ObjectM3 from "../models/m3-rails";
-import ObjectM3Wire from "../models/m3-rails_wire";
-import ObjectM4 from "../models/m4-mesh";
+//import ObjectM2 from "../models/m2-common";
+//import ObjectM3 from "../models/m3-rails";
+//import ObjectM3Wire from "../models/m3-rails_wire";
+//import ObjectM4 from "../models/m4-mesh";
 import { useEffect } from "react";
 import Analyze from "../models/analyze";
-import ObjectM4Wire from "../models/m4-mesh_wire";
-import ObjectM3Surface from "../models/m3-rails_surface";
+//import ObjectM4Wire from "../models/m4-mesh_wire";
+//import ObjectM3Surface from "../models/m3-rails_surface";
 import Statistics from "../ui/statistics";
 
 import { TransformControls } from "@react-three/drei";
@@ -386,7 +386,7 @@ const Scene = () => {
             setUniqueRacksStatistics,
           }}
         />
-        {
+        {/*
           <ObjectM2
             visible={grid_visible}
             setLayers={setLayers1}
@@ -394,11 +394,11 @@ const Scene = () => {
             setReady={setReady1}
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Размерная сетка")}
-          />
+          />*/
         }
 
         {/* Черновой меш */}
-        {isReady1 && (
+        {/*isReady1 && (
           <ObjectM4Wire
             visible={mesh_visible && simpleModel}
             setLayers={setLayers3}
@@ -407,10 +407,10 @@ const Scene = () => {
             setPercentsLoaded={setPercentsLoaded}
             setLoadingObj={() => setLoadingObj("Коммуникации")}
           />
-        )}
+        )*/}
 
         {/* меш */}
-        {isReady3 && (
+        {/*isReady3 && (
           <ObjectM4
             visible={mesh_visible && !simpleModel}
             setLayers={setLayers5}
@@ -421,7 +421,7 @@ const Scene = () => {
               setLoadingObj("Комуникации (Высокое качество)")
             }
           />
-        )}
+          )*/}
       </Canvas>
     </>
   );
