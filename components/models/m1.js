@@ -10,9 +10,17 @@ const Loader = () => {
 };
 
 const Rhino3dmLogo = ({ url, setActiveLayers, setObjects, ...props }) => {
-  const model = useLoader(Rhino3dmLoader, url, (loader) =>
-    loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/")
-  );
+  const [model, setModel] = useState(null);
+
+  useEffect(() => {
+    const model = useLoader(Rhino3dmLoader, url, (loader) =>
+      loader.setLibraryPath(
+        "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/"
+      )
+    );
+
+    setModel(model);
+  }, []);
 
   useEffect(() => {
     if (model) {
