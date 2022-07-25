@@ -63,7 +63,7 @@ const Scene = ({ viewType }) => {
   /* ***** */
 
   /* Approach 1 */
-  const [JSONlinks, setJSONllinks] = useState();
+  /*const [JSONlinks, setJSONllinks] = useState();
 
   if (way === "l") {
     const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -74,17 +74,17 @@ const Scene = ({ viewType }) => {
         setJSONllinks(JSONlinks_data);
       }
     }, [JSONlinks_data]);
-  }
+  }*/
 
   /* Approach 2 */
 
-  if (way === "s") {
+  /*if (way === "s") {
     useEffect(() => {
       setJSONllinks(["https://mmodel.contextmachine.online:8181/"]);
     }, []);
-  }
+  }*/
 
-  if (way === "s2") {
+  /*if (way === "s2") {*/
     useEffect(() => {
       fetch("https://mmodel.contextmachine.online:8181/get_keys")
         .then((response) => {
@@ -100,7 +100,7 @@ const Scene = ({ viewType }) => {
           );
         });
     }, []);
-  }
+  /* } */
 
   const meshRef = useRef();
 
