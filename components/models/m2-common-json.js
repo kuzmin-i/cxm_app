@@ -47,7 +47,7 @@ const MeshM2 = () => {
   const [meshes, setMeshes] = useState([]);
 
   useEffect(() => {
-    if (window) {
+    if (window && window.rhino3dm()) {
       window.rhino3dm().then(async (m) => {
         let rhino = m;
 
@@ -171,7 +171,6 @@ const MeshM2 = () => {
 
             preparedObjects.push(threeMesh);*/
           } else if (mesh instanceof rhino.Point) {
-            console.log("mesh point", mesh.location);
             const location = mesh.location;
 
             const point = (

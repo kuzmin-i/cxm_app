@@ -8,6 +8,7 @@ import View from "../../components/telegram/view";
 import Scene from "../../components/scene/tg-version";
 
 import Export from "../../components/telegram/export";
+import CursorProvider from "../../components/providers/cursor-providers";
 
 const CoreLayout = styled.div`
   width: 100vw;
@@ -42,7 +43,9 @@ const Space3D = styled.div`
   width: 100%;
   height: 100%;
 
-  background: #f2f2f2;
+  /* background: #f2f2f2; */
+
+  background: #dad4d4;
 `;
 
 const App = () => {
@@ -175,16 +178,18 @@ const App = () => {
         <View {...{ fullsize, viewType, setViewType }} />
 
         <Space3D>
-          <Scene
-            {...{
-              rhinoConnected,
-              needsData,
-              setNeedsData,
-              layers,
-              viewType,
-              setViewType,
-            }}
-          />
+          <CursorProvider>
+            <Scene
+              {...{
+                rhinoConnected,
+                needsData,
+                setNeedsData,
+                layers,
+                viewType,
+                setViewType,
+              }}
+            />
+          </CursorProvider>
         </Space3D>
 
         <ToolsPanel

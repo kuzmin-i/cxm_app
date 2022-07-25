@@ -6,6 +6,8 @@ import {
 } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 
+import { Vector3 } from "three";
+
 /* Настраиваем камеру */
 const Camera = (props = {}) => {
   const { viewType } = props;
@@ -30,7 +32,7 @@ const Camera = (props = {}) => {
 
         if (viewType === "top") {
           setZoom(6);
-          setPosition([0, 1900, 0]);
+          setPosition([0, 0, 1900]);
         } else {
           setZoom(6);
           setPosition([-500, 900, 800]);
@@ -51,12 +53,14 @@ const Camera = (props = {}) => {
         name="perspective"
         ref={perspectiveCam}
         fov={100}
+        up={new Vector3(0, 0, 1)}
         {...{ zoom, position, rotation: [0, 0, 0] }}
       />
 
       <OrthographicCamera
         name="ortho"
         ref={orthoCam}
+        up={new Vector3(0, 0, 1)}
         {...{ zoom, position, rotation: [0, 0, 0] }}
       />
 
@@ -67,9 +71,11 @@ const Camera = (props = {}) => {
         enableZoom
         enablePan
         rev
-        panSpeed={0.1}
+        panSpeed={2}
+        rotateSpeed={2}
         target={target0}
         makeDefault
+        up={new Vector3(0, 0, 1)}
       />
     </>
   );

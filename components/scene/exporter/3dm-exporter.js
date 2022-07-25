@@ -50,9 +50,6 @@ const Exporter3dm = ({ rhinoConnected }) => {
   const handleDownloading = () => {
     let doc = new module.File3dm();
 
-    console.log("model", model);
-    console.log("model.curves", model.curves);
-
     /* adding curves */
     /*for (let i = 0; i < model.curves.length; i++) {
       doc.objects().add(model.curves[i], null);
