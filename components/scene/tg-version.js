@@ -16,7 +16,7 @@ import SceneExportPreparation from "./exporter/scene-export-preparation";
 
 //import ObjectM4Wire from "../models/m4-mesh_wire";
 //import MeshM2 from "../models/m2-common-json";
-import IFCModel from "../models/ifc-model";
+//import IFCModel from "../models/ifc-model";
 import Clip from "../models/clip";
 import useClippingStore from "../../store/clipping-planes";
 import Mouse from "../models/mouse";
